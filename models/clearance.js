@@ -13,3 +13,5 @@ const registerStudent = async (id, name, clearanceID, collegeID, password) => {
     password
   );
 };
+
+module.exports = { getAllStudents, registerStudent };
