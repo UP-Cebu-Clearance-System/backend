@@ -1,23 +1,25 @@
-const test = require("express").Router();
-const Clearance = require("../models/clearance");
+const test = require("express").Router(); 
 const Student = require("../models/entities/student");
 
 const College = require("../models/entities/college");
 const Office = require("../models/entities/office");
-const ClearanceType = require("../models/entities/clearance-type");
-const ClearanceFlow = require("../models/entities/clearance-flow");
+const ClearanceType = require("../models/entities/clearance-type"); 
+const Clearance = require("../models/entities/clearance");
 
 test.get("/", async (req, res) => {
-  res.send(await ClearanceFlow.getAllClearanceFlows());
+  res.send(await Clearance.getAllClearances());
 });
 test.get("/getOne", async (req, res) => {
-  res.send(await ClearanceFlow.getClearanceFlow(7));
+  res.send(await Clearance.getClearance("testClearanceID"));
 });
 test.get("/create", async (req, res) => {
-  result = await ClearanceFlow.createClearanceFlow( 
+  result = await Clearance.createClearance(
+    "testClearanceID",
     "testClearanceTypeID",
     "testApproverID",
-    1
+    58,
+    "testClearanceStatus",
+    "testClearanceRemarks"
   );
   console.log(result);
   res.send(result);
@@ -25,17 +27,19 @@ test.get("/create", async (req, res) => {
 
 test.get("/update", async (req, res) => {
   res.send(
-    await ClearanceFlow.updateClearanceFlow([
+    await Clearance.updateClearance([
       "updated testClearanceTypeID",
       "updated testApproverID",
-      88,
-      7,
+      69,
+      "updated testClearanceStatus",
+      "updated testClearanceRemarks",
+      "testClearanceID",
     ])
   );
 });
 
 test.get("/delete", async (req, res) => {
-  res.send(await ClearanceFlow.deleteClearanceFlow(7));
+  res.send(await Clearance.deleteClearance("testClearanceID"));
 });
 
 module.exports = { test };
