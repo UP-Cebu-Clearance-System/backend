@@ -4,7 +4,7 @@ function getStudent(id) {
   const query = "SELECT * from Student WHERE StudentID = ?";
   return new Promise(function (resolve, reject) {
     db.get(query, [id], (err, rows) => {
-      if (err) reject(err);
+      if (err) resolve(err);
       else resolve(rows);
     });
   });
@@ -14,7 +14,7 @@ function getAllStudents() {
   const query = "SELECT * from Student";
   return new Promise(function (resolve, reject) {
     db.all(query, [], (err, rows) => {
-      if (err) reject(err);
+      if (err) resolve(err);
       else resolve(rows);
     });
   });
@@ -27,7 +27,7 @@ function createStudent(id, name, clearanceID, collegeID, password) {
       query,
       [id, name, clearanceID, "notapplied", collegeID, password],
       (err, rows) => {
-        if (err) reject(err);
+        if (err) resolve(err);
         else resolve({ message: "Successfully created" });
       }
     );
@@ -39,7 +39,7 @@ function updateStudent(params) {
   const query = `UPDATE Student SET Name = ?, ClearanceID = ?, Status = ?, CollegeID = ?, Password = ?  WHERE StudentID = ?`;
   return new Promise(function (resolve, reject) {
     db.all(query, params, (err, rows) => {
-      if (err) reject(err);
+      if (err) resolve(err);
       else resolve({ message: "Successfully updated" });
     });
   });
@@ -48,7 +48,7 @@ function deleteStudent(id) {
   const query = "DELETE from Student WHERE StudentID = ?";
   return new Promise(function (resolve, reject) {
     db.run(query, [id], (err, rows) => {
-      if (err) reject(err);
+      if (err) resolve(err);
       else resolve({ message: "Successfully deleted" });
     });
   });

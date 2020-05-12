@@ -2,49 +2,36 @@ const test = require("express").Router();
 const Clearance = require("../models/clearance");
 const Student = require("../models/entities/student");
 
-test.get("/", async (req, res) => {
-  console.log("run debug");
+const College = require("../models/entities/college");
+const Office = require("../models/entities/office");
 
-  res.send(await Student.getAllStudents());
+test.get("/", async (req, res) => {
+  College;
+
+  res.send(await College.getAllColleges());
 });
 test.get("/getOne", async (req, res) => {
-  console.log("run debug");
+  College;
 
-  res.send(await Student.getStudent("testID"));
+  res.send(await College.getCollege("testID"));
 });
 test.get("/create", async (req, res) => {
-  console.log("run debug");
-  result = await Student.createStudent(
-    "testID",
-    "test name",
-    "test clearanceID",
-    "test collegeID",
-    "test password"
-  );
-console.log(result)
+  College;
+  result = await College.createCollege("testCollegeID", "testCollegename");
+  console.log(result);
   res.send(result);
 });
 
 test.get("/update", async (req, res) => {
-  console.log("run debug");
+  College;
 
-  res.send(
-    await Student.updateStudent([
-      "updated name",
-      "updatedclearanceID",
-      "updatedstatus",
-      "updatedCollegeID",
-      "updatedPassword",
-
-      "testID",
-    ])
-  );
+  res.send(await College.updateCollege(["updated name", "testCollegeID"]));
 });
 
 test.get("/delete", async (req, res) => {
-  console.log("run debug");
+  College;
 
-  res.send(await Student.deleteStudent("testID"));
+  res.send(await College.deleteCollege("testCollegeID"));
 });
 
 module.exports = { test };
