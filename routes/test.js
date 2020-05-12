@@ -1,40 +1,24 @@
 const test = require("express").Router();
-const Approver = require("../models/entities/approver");
+const Admin = require("../models/entities/admin");
 
 test.get("/", async (req, res) => {
-  res.send(await Approver.getAllApprovers());
+  res.send(await Admin.getAllAdmins());
 });
 test.get("/getOne", async (req, res) => {
-  res.send(await Approver.getApprover("testApproverID"));
+  res.send(await Admin.getAdmin("testUsername"));
 });
 test.get("/create", async (req, res) => {
-  result = await Approver.createApprover(
-    "testApproverID",
-    "testApproverName",
-    "test employee id",
-    "test title",
-    "test officeID",
-    "test Password"
-  );
+  result = await Admin.createAdmin("testUsername", "test Password");
   console.log(result);
   res.send(result);
 });
 
 test.get("/update", async (req, res) => {
-  res.send(
-    await Approver.updateApprover([
-      "updated testApproverName",
-      "updated test employee id",
-      "updated test title",
-      "updated test officeID",
-      "updated test Password",
-      "testApproverID",
-    ])
-  );
+  res.send(await Admin.updateAdmin(["updated test Password", "testUsername"]));
 });
 
 test.get("/delete", async (req, res) => {
-  res.send(await Approver.deleteApprover("testApproverID"));
+  res.send(await Admin.deleteAdmin("testUsername"));
 });
 
 module.exports = { test };
