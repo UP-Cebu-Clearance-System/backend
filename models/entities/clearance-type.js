@@ -20,10 +20,10 @@ function getAllClearanceTypes() {
   });
 }
 
-function createClearanceType(id, name) {
+function createClearanceType(id, collegeID) {
   const query = `INSERT INTO ClearanceType Values(?,?)`;
   return new Promise(function (resolve, reject) {
-    db.all(query, [id, name], (err, rows) => {
+    db.all(query, [id, collegeID], (err, rows) => {
       if (err) resolve(err);
       else resolve({ message: "Successfully created" });
     });
@@ -32,7 +32,7 @@ function createClearanceType(id, name) {
 
 function updateClearanceType(params) {
   /** Must give the whole ClearanceType row in exact order */
-  const query = `UPDATE ClearanceType SET Name = ? WHERE ClearanceTypeID = ?`;
+  const query = `UPDATE ClearanceType SET CollegeID = ? WHERE ClearanceTypeID = ?`;
   return new Promise(function (resolve, reject) {
     db.all(query, params, (err, rows) => {
       if (err) resolve(err);

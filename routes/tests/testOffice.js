@@ -6,23 +6,23 @@ const College = require("../models/entities/college");
 const Office = require("../models/entities/office");
 
 test.get("/", async (req, res) => {
-  res.send(await College.getAllColleges());
+  res.send(await Office.getAllOffices());
 });
 test.get("/getOne", async (req, res) => {
-  res.send(await College.getCollege("testCollegeID"));
+  res.send(await Office.getOffice("testOfficeID"));
 });
 test.get("/create", async (req, res) => {
-  result = await College.createCollege("testCollegeID", "testCollegeName");
+  result = await Office.createOffice("testOfficeID", "testOfficeName");
   console.log(result);
   res.send(result);
 });
 
 test.get("/update", async (req, res) => {
-  res.send(await College.updateCollege(["updatedCollegeName", "testCollegeID"]));
+  res.send(await Office.updateOffice(["updatedOfficeName", "testOfficeID"]));
 });
 
 test.get("/delete", async (req, res) => {
-  res.send(await College.deleteCollege("testCollegeID"));
+  res.send(await Office.deleteOffice("testOfficeID"));
 });
 
 module.exports = { test };
