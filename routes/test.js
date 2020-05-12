@@ -1,25 +1,20 @@
-const test = require("express").Router(); 
-const Student = require("../models/entities/student");
-
-const College = require("../models/entities/college");
-const Office = require("../models/entities/office");
-const ClearanceType = require("../models/entities/clearance-type"); 
-const Clearance = require("../models/entities/clearance");
+const test = require("express").Router();
+const Approver = require("../models/entities/approver");
 
 test.get("/", async (req, res) => {
-  res.send(await Clearance.getAllClearances());
+  res.send(await Approver.getAllApprovers());
 });
 test.get("/getOne", async (req, res) => {
-  res.send(await Clearance.getClearance("testClearanceID"));
+  res.send(await Approver.getApprover("testApproverID"));
 });
 test.get("/create", async (req, res) => {
-  result = await Clearance.createClearance(
-    "testClearanceID",
-    "testClearanceTypeID",
+  result = await Approver.createApprover(
     "testApproverID",
-    58,
-    "testClearanceStatus",
-    "testClearanceRemarks"
+    "testApproverName",
+    "test employee id",
+    "test title",
+    "test officeID",
+    "test Password"
   );
   console.log(result);
   res.send(result);
@@ -27,19 +22,19 @@ test.get("/create", async (req, res) => {
 
 test.get("/update", async (req, res) => {
   res.send(
-    await Clearance.updateClearance([
-      "updated testClearanceTypeID",
-      "updated testApproverID",
-      69,
-      "updated testClearanceStatus",
-      "updated testClearanceRemarks",
-      "testClearanceID",
+    await Approver.updateApprover([
+      "updated testApproverName",
+      "updated test employee id",
+      "updated test title",
+      "updated test officeID",
+      "updated test Password",
+      "testApproverID",
     ])
   );
 });
 
 test.get("/delete", async (req, res) => {
-  res.send(await Clearance.deleteClearance("testClearanceID"));
+  res.send(await Approver.deleteApprover("testApproverID"));
 });
 
 module.exports = { test };

@@ -1,9 +1,6 @@
 const test = require("express").Router();
-const Clearance = require("../models/clearance");
 const Student = require("../models/entities/student");
 
-const College = require("../models/entities/college");
-const Office = require("../models/entities/office");
 
 test.get("/", async (req, res) => {
   res.send(await Student.getAllStudents());
@@ -12,7 +9,6 @@ test.get("/getOne", async (req, res) => {
   res.send(await Student.getStudent("testID"));
 });
 test.get("/create", async (req, res) => {
-  College;
   result = await Student.createStudent(
     "testID",
     "test name",

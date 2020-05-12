@@ -1,8 +1,4 @@
 const test = require("express").Router();
-const Clearance = require("../models/clearance");
-const Student = require("../models/entities/student");
-
-const College = require("../models/entities/college");
 const Office = require("../models/entities/office");
 
 test.get("/", async (req, res) => {

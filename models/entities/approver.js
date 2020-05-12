@@ -1,7 +1,7 @@
 const { db } = require("../../db");
 
-function getClearance(id) {
-  const query = "SELECT * from Clearance WHERE ClearanceID = ?";
+function getApprover(id) {
+  const query = "SELECT * from Approver WHERE ApproverID = ?";
   return new Promise(function (resolve, reject) {
     db.get(query, [id], (err, rows) => {
       if (err) resolve(err);
@@ -10,8 +10,8 @@ function getClearance(id) {
   });
 }
 
-function getAllClearances() {
-  const query = "SELECT * from Clearance";
+function getAllApprovers() {
+  const query = "SELECT * from Approver";
   return new Promise(function (resolve, reject) {
     db.all(query, [], (err, rows) => {
       if (err) resolve(err);
@@ -20,19 +20,12 @@ function getAllClearances() {
   });
 }
 
-function createClearance(
-  clearanceID,
-  clearanceTypeID,
-  approverID,
-  flow,
-  status,
-  remarks
-) {
-  const query = `INSERT INTO Clearance Values(?,?,?,?,?,?)`;
+function createApprover(id, name, employeeID, title, officeID, password) {
+  const query = `INSERT INTO Approver Values(?,?,?,?,?,?)`;
   return new Promise(function (resolve, reject) {
     db.all(
       query,
-      [clearanceID, clearanceTypeID, approverID, flow, status, remarks],
+      [id, name, employeeID, title, officeID, password],
       (err, rows) => {
         if (err) resolve(err);
         else resolve({ message: "Successfully created" });
@@ -41,19 +34,18 @@ function createClearance(
   });
 }
 
-function updateClearance(params) {
-  /** Must give the whole Clearance row in exact  */
-  const query = `UPDATE Clearance SET ClearanceTypeID = ?, ApproverID = ?,Flow  = ?, Status = ?, Remarks =? WHERE ClearanceID = ?`;
+function updateApprover(params) {
+  /** Must give the whole Approver row in exact order */
+  const query = `UPDATE Approver SET Name = ?, EmployeeID = ?, Title = ?, OfficeID = ?, Password = ?  WHERE ApproverID = ?`;
   return new Promise(function (resolve, reject) {
     db.all(query, params, (err, rows) => {
-      if (err) reject(err);
+      if (err) resolve(err);
       else resolve({ message: "Successfully updated" });
     });
   });
 }
-
-function deleteClearance(id) {
-  const query = "DELETE from Clearance WHERE ClearanceID = ?";
+function deleteApprover(id) {
+  const query = "DELETE from Approver WHERE ApproverID = ?";
   return new Promise(function (resolve, reject) {
     db.run(query, [id], (err, rows) => {
       if (err) resolve(err);
@@ -63,9 +55,9 @@ function deleteClearance(id) {
 }
 
 module.exports = {
-  getClearance,
-  getAllClearances,
-  createClearance,
-  updateClearance,
-  deleteClearance,
+  getApprover,
+  getAllApprovers,
+  createApprover,
+  updateApprover,
+  deleteApprover,
 };
