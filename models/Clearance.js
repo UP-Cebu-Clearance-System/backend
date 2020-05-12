@@ -1,4 +1,4 @@
-const Student = require("../models/entities/student");
+const Student = require("./entities/student");
 
 const getAllStudents = async () => {
   return await Student.getAllStudents();

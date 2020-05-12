@@ -1,50 +1,24 @@
 const test = require("express").Router();
-const Clearance = require("../models/clearance");
-const Student = require("../models/entities/student");
+const Admin = require("../models/entities/admin");
 
 test.get("/", async (req, res) => {
-  console.log("run debug");
-
-  res.send(await Student.getAllStudents());
+  res.send(await Admin.getAllAdmins());
 });
 test.get("/getOne", async (req, res) => {
-  console.log("run debug");
-
-  res.send(await Student.getStudent("testID"));
+  res.send(await Admin.getAdmin("testUsername"));
 });
 test.get("/create", async (req, res) => {
-  console.log("run debug");
-  result = await Student.createStudent(
-    "testID",
-    "test name",
-    "test clearanceID",
-    "test collegeID",
-    "test password"
-  );
-console.log(result)
+  result = await Admin.createAdmin("testUsername", "test Password");
+  console.log(result);
   res.send(result);
 });
 
 test.get("/update", async (req, res) => {
-  console.log("run debug");
-
-  res.send(
-    await Student.updateStudent([
-      "updated name",
-      "updatedclearanceID",
-      "updatedstatus",
-      "updatedCollegeID",
-      "updatedPassword",
-
-      "testID",
-    ])
-  );
+  res.send(await Admin.updateAdmin(["updated test Password", "testUsername"]));
 });
 
 test.get("/delete", async (req, res) => {
-  console.log("run debug");
-
-  res.send(await Student.deleteStudent("testID"));
+  res.send(await Admin.deleteAdmin("testUsername"));
 });
 
 module.exports = { test };
