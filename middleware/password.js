@@ -12,20 +12,14 @@ const hashPassword = async (req, res, next) => {
 }
 
 const verifyPassword = async(req, res, next) => {
-    const id = req.body.id
-    const info = await getStudent(id)
-    if(info){
-        try {
-            if(await compare(req.body.password, info.Password)){
-                next()
-            } else {
-                res.status(401).send({ message: `Wrong Password.` })
-            }
-        } catch {
-            res.status(500).send({ message: `Can't verify account.` })
+    try {
+        if(await compare(req.body.password, req.body.dbpassword)){
+            next()
+        } else {
+            res.status(401).send({ message: `Wrong Password.` })
         }
-    } else {
-        res.status(404).send({ message: `User not found.` })
+    } catch {
+        res.status(500).send({ message: `Can't verify account.` })
     }
 }
 
