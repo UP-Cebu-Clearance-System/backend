@@ -12,13 +12,56 @@ const getAllStudents = async () => {
 };
 
 const registerStudent = async (id, name, clearanceID, collegeID, password) => {
-  return await Student.createStudent(
-    id,
-    name,
-    clearanceID,
-    collegeID,
-    password
-  );
+  let isRegistered = await this.isStudentRegistered(id);
+  if (!isRegistered) {
+    try {
+      await Student.createStudent(id, name, clearanceID, collegeID, password);
+      let clrTypeID = await fetchClearanceTypeBasedOnCollegeID(collegeID);
+      await populateClearanceFromClearanceFlowBasedOnClearanceTypeID(
+        id,
+        clrTypeID
+      );
+      await populateClearanceFromClearanceFlowBasedOnClearanceTypeID(
+        id,
+        clearanceID
+      );
+    } catch {}
+  } else {
+    return { message: "Failed. Student already registered" };
+  }
 };
 
-module.exports = { getAllStudents, registerStudent };
+const populateClearanceFromClearanceFlowBasedOnClearanceTypeID = async (
+  id,
+  clearanceTypeID
+) => {
+  // todo : create rows of clerance elements  in clearanc etable
+};
+const fetchClearanceTypeBasedOnCollegeID = async (collegeID) => {
+  return ClearanceType.getClearanceTypeIDBasedOnCollegeID(collegeID);
+};
+
+const isStudentRegistered = async (id) => {
+  return (await Student.getStudent(id)) != null;
+};
+
+const fetchStudentInfo = async (id) => {
+  return await Student.getStudentPublicInfo(id);
+};
+const fetchClearance = async (clearanceID) => {
+  return await Clearance.getClearance(clearanceID);
+};
+
+const fetchAllClearances = async () => {
+  return await Clearance.getAllClearances();
+};
+module.exports = {
+  fetchClearance,
+  getAllStudents,
+  fetchAllClearances,
+  registerStudent,
+  fetchStudentInfo,
+  isStudentRegistered,
+  fetchClearanceTypeBasedOnCollegeID,
+  populateClearanceFromClearanceFlowBasedOnClearanceTypeID,
+};

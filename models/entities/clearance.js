@@ -3,7 +3,7 @@ const { db } = require("../../db");
 function getClearance(id) {
   const query = "SELECT * from Clearance WHERE ClearanceID = ?";
   return new Promise(function (resolve, reject) {
-    db.get(query, [id], (err, rows) => {
+    db.all(query, [id], (err, rows) => {
       if (err) resolve(err);
       else resolve(rows);
     });

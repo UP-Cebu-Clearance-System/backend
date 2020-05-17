@@ -10,6 +10,18 @@ function getClearanceType(id) {
   });
 }
 
+function getClearanceTypeIDBasedOnCollegeID(id) {
+  const query = "SELECT ClearanceTypeID from ClearanceType WHERE CollegeID = ?";
+  return new Promise(function (resolve, reject) {
+    db.get(query, [id], (err, rows) => {
+      if (err) resolve(err);
+      else resolve(rows);
+    });
+  });
+}
+
+
+
 function getAllClearanceTypes() {
   const query = "SELECT * from ClearanceType";
   return new Promise(function (resolve, reject) {
@@ -56,4 +68,5 @@ module.exports = {
   createClearanceType,
   updateClearanceType,
   deleteClearanceType,
+  getClearanceTypeIDBasedOnCollegeID
 };

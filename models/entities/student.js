@@ -10,6 +10,17 @@ function getStudent(id) {
   });
 }
 
+function getStudentPublicInfo(id) {
+  const query =
+    "SELECT StudentID, Name, ClearanceID, Status, CollegeID  from Student WHERE StudentID = ?";
+  return new Promise(function (resolve, reject) {
+    db.get(query, [id], (err, rows) => {
+      if (err) resolve(err);
+      else resolve(rows);
+    });
+  });
+}
+
 function getAllStudents() {
   const query = "SELECT * from Student";
   return new Promise(function (resolve, reject) {
@@ -28,7 +39,7 @@ function createStudent(id, name, clearanceID, collegeID, password) {
       [id, name, clearanceID, "notapplied", collegeID, password],
       (err, rows) => {
         if (err) resolve(err);
-        else resolve({ message: "Successfully created" });
+        else resolve({ message: "Successfully created", success: true });
       }
     );
   });
@@ -60,4 +71,5 @@ module.exports = {
   createStudent,
   updateStudent,
   deleteStudent,
+  getStudentPublicInfo
 };
