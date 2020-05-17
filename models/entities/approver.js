@@ -10,6 +10,16 @@ function getApprover(id) {
   });
 }
 
+function getApproverPublicInfo(id) {
+  const query = "SELECT ApproverID, Name, Title from Approver WHERE ApproverID = ?";
+  return new Promise(function (resolve, reject) {
+    db.get(query, [id], (err, rows) => {
+      if (err) resolve(err);
+      else resolve(rows);
+    });
+  });
+}
+
 function getAllApprovers() {
   const query = "SELECT * from Approver";
   return new Promise(function (resolve, reject) {
@@ -57,6 +67,7 @@ function deleteApprover(id) {
 module.exports = {
   getApprover,
   getAllApprovers,
+  getApproverPublicInfo,
   createApprover,
   updateApprover,
   deleteApprover,

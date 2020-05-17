@@ -55,8 +55,17 @@ const fetchClearance = async (clearanceID) => {
 const fetchAllClearances = async () => {
   return await Clearance.getAllClearances();
 };
+
+const registerApprover = async () => {
+  //
+};
+
+const fetchApproverInfo = async (id) => {
+  return await Approver.getApproverPublicInfo(id);
+};
 module.exports = {
   fetchClearance,
+  fetchApproverInfo,
   getAllStudents,
   fetchAllClearances,
   registerStudent,

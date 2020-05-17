@@ -49,6 +49,7 @@ function deleteClearanceFlow(id) {
     });
   });
 }
+ 
 
 module.exports = {
   getClearanceFlow,
