@@ -54,6 +54,29 @@ function updateApprover(params) {
     });
   });
 }
+
+function updatePassword(id,passwd){
+
+  const query = `UPDATE Approver SET Password = ? WHERE ApproverID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [passwd,id], (err, rows) => {
+      if (err) resolve(err);
+      else resolve({ message: "Successfully updated" });
+    });
+  }); 
+}
+
+
+function registerApprover(id,passwd){
+
+  const query = `UPDATE Approver SET Password = ? WHERE ApproverID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [passwd,id], (err, rows) => {
+      if (err) resolve(err);
+      else resolve({ message: "Successfully updated" });
+    });
+  }); 
+}
 function deleteApprover(id) {
   const query = "DELETE from Approver WHERE ApproverID = ?";
   return new Promise(function (resolve, reject) {
@@ -71,4 +94,6 @@ module.exports = {
   createApprover,
   updateApprover,
   deleteApprover,
+  updatePassword,
+  registerApprover
 };

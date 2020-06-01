@@ -56,16 +56,24 @@ const fetchAllClearances = async () => {
   return await Clearance.getAllClearances();
 };
 
-const registerApprover = async () => {
+const registerApprover = async (id, passwd) => {
+  return await Approver.registerApprover(id, passwd);
+  //
+};
+const updateApproverPassword = async (id, passwd) => {
+  return await Approver.updatePassword(id, passwd);
   //
 };
 
 const fetchApproverInfo = async (id) => {
   return await Approver.getApproverPublicInfo(id);
 };
+
 module.exports = {
   fetchClearance,
   fetchApproverInfo,
+  registerApprover,
+  updateApproverPassword,
   getAllStudents,
   fetchAllClearances,
   registerStudent,
