@@ -24,13 +24,11 @@ jobs:
       run: |
         touch .env
         echo SECRET=${{ secrets.SERVER_SECRET }} >> .env
+        ls -a
         
-    - name: Push .env files
+    - name: delete gitignore
       run: |
-        git config user.email "${{ secrets.HEROKU_EMAIL }}"
-        git config user.name "${{ secrets.HEROKU_USER }}"
-        git add .
-        git commit -m "environment files"
+        rm .gitignore
 
     - name: Deploy to Heroku
       uses: AkhileshNS/heroku-deploy@v3.0.4
