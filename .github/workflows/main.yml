@@ -28,6 +28,7 @@ jobs:
     - name: Push .env files
       run: |
         git config user.email "${{ secrets.HEROKU_EMAIL }}"
+        git config user.name "${{ secrets.HEROKU_USER }}"
         git add .
         git commit -m "environment files"
 
