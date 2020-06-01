@@ -24,13 +24,12 @@ jobs:
       run: |
         touch .env
         echo SECRET=${{ secrets.SERVER_SECRET }} >> .env
-        ls -a
         
     - name: Delete gitignore
       run: |
         rm .gitignore
         
-    - name: Push to directory
+    - name: Push .env to directory
       run: |
         git config user.email "${{ secrets.HEROKU_EMAIL }}"
         git config user.name "${{ secrets.HEROKU_USER }}"
