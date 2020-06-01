@@ -26,9 +26,16 @@ jobs:
         echo SECRET=${{ secrets.SERVER_SECRET }} >> .env
         ls -a
         
-    - name: delete gitignore
+    - name: Delete gitignore
       run: |
         rm .gitignore
+        
+    - name: Push to directory
+      run: |
+        git config user.email "${{ secrets.HEROKU_EMAIL }}"
+        git config user.name "${{ secrets.HEROKU_USER }}"
+        git add .
+        git commit -m "environment variables"
 
     - name: Deploy to Heroku
       uses: AkhileshNS/heroku-deploy@v3.0.4
