@@ -21,11 +21,11 @@ function getAllClearances() {
 }
 
 function populateClearanceBasedOnClearanceIDandClearanceTypeID(clearanceID, clearanceTypeID) {
-const query = "INSERT INTO Clearance (CID, ClearanceID, ClearanceTypeID, ApproverID, Flow, Status, Remarks) select * from (SELECT CID,case when 1 then ? end as ClearanceID ,  ClearanceFlow.ClearanceTypeID as ClearanceTypeID, ClearanceFlow.ApproverID as ApproverID, ClearanceFlow.Flow as Flow, Status, Remarks  FROM (select * from ClearanceFlow where ClearanceFlow.ClearanceTypeID == ?)as ClearanceFlow left join Clearance on ClearanceFlow.ClearanceTypeID == Clearance.ClearanceTypeID)";
+const query = "INSERT INTO Clearance (CID, ClearanceID, ClearanceTypeID, ApproverID, Flow, Status, Remarks) select * from (SELECT NULL,case when 1 then ? end as ClearanceID ,  ClearanceFlow.ClearanceTypeID as ClearanceTypeID, ClearanceFlow.ApproverID as ApproverID, ClearanceFlow.Flow as Flow, Status, Remarks  FROM (select * from ClearanceFlow where ClearanceFlow.ClearanceTypeID == ?)as ClearanceFlow left join Clearance on ClearanceFlow.ClearanceTypeID == Clearance.ClearanceTypeID)";
 return new Promise(function (resolve, reject) {
     db.all(query, [clearanceID, clearanceTypeID], (err, rows) => {
-      if (err){  resolve(err);}
-      else resolve({ message: "Successfully created" });
+      if (err){  resolve({message:"failed", success:false, error:err});}
+      else resolve({ message: "Successfully created", success:true });
     });
   });
 }

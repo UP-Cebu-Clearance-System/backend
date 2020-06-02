@@ -35,7 +35,17 @@ test.get("/create", async (req, res) => {
   console.log(result);
   res.send(result);
 });
-
+test.get("/reg", async (req, res) => {
+  result = await ClearanceDatabase.registerStudent(
+    "2018-2504",
+    "John Doe",
+    "ct-cosci-2018-2504",
+    "cosci",
+    "test password"
+  );
+  console.log(result);
+  res.send(result);
+});
 test.get("/col", async (req, res) => {
   result = await Student.getStudentCollegeID(
     "2018-05992"

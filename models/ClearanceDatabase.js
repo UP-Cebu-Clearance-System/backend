@@ -12,22 +12,10 @@ const getAllStudents = async () => {
 };
 
 const registerStudent = async (id, name, clearanceID, collegeID, password) => {
-  let isRegistered = await this.isStudentRegistered(id);
+  let isRegistered = await isStudentRegistered(id);
   if (!isRegistered) {
-    try {
-      await Student.createStudent(id, name, clearanceID, collegeID, password);
-      let clrTypeID = await fetchClearanceTypeBasedOnCollegeID(collegeID);
-      await populateClearanceFromClearanceFlowBasedOnClearanceTypeID(
-        id,
-        clrTypeID
-      );
-      await populateClearanceFromClearanceFlowBasedOnClearanceTypeID(
-        id,
-        clearanceID
-      );
-    } catch {
-      return { message: "Failed." };
-    }
+    await Student.createStudent(id, name, clearanceID, collegeID, password);
+    return await populateClearanceForStudentID(id);
   } else {
     return { message: "Failed. Student already registered" };
   }
@@ -36,21 +24,21 @@ const registerStudent = async (id, name, clearanceID, collegeID, password) => {
 const populateClearanceForStudentID = async (id) => {
   try {
     let colID = (await Student.getStudentCollegeID(id))["CollegeID"];
-    let clearanceTypeID = (await ClearanceType.getClearanceTypeIDBasedOnCollegeID(colID))['ClearanceTypeID'];
+    let clearanceTypeID = (
+      await ClearanceType.getClearanceTypeIDBasedOnCollegeID(colID)
+    )["ClearanceTypeID"];
     let clearanceID = (await Student.getStudentClearanceID(id))["ClearanceID"];
 
     console.log(clearanceTypeID);
     console.log(clearanceID);
-    try {
-      await Clearance.populateClearanceFromClearanceFlowBasedOnClearanceTypeID(
-        clearanceID,
-        clearanceTypeID
-      );
-    } catch {
-      return { message: "Failed." };
-    }
+
+    return await Clearance.populateClearanceBasedOnClearanceIDandClearanceTypeID(
+      clearanceID,
+      clearanceTypeID
+    );
   } catch (e) {
-    return { message: e.message };
+    console.log(e);
+    return { message: "Failed retrieving", success: false };
   }
 
   // todo : create rows of clerance elements  in clearanc etable
