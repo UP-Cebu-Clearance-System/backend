@@ -64,7 +64,7 @@ const fetchAllClearances = async () => {
 
 const registerApprover = async (id, passwd) => {
   return await Approver.registerApprover(id, passwd);
-  //
+  // what happens is basically you set your password
 };
 const updateApproverPassword = async (id, passwd) => {
   return await Approver.updatePassword(id, passwd);
