@@ -25,16 +25,34 @@ const registerStudent = async (id, name, clearanceID, collegeID, password) => {
         id,
         clearanceID
       );
-    } catch {}
+    } catch {
+      return { message: "Failed." };
+    }
   } else {
     return { message: "Failed. Student already registered" };
   }
 };
 
-const populateClearanceFromClearanceFlowBasedOnClearanceTypeID = async (
-  id,
-  clearanceTypeID
-) => {
+const populateClearanceForStudentID = async (id) => {
+  try {
+    let colID = (await Student.getStudentCollegeID(id))["CollegeID"];
+    let clearanceTypeID = (await ClearanceType.getClearanceTypeIDBasedOnCollegeID(colID))['ClearanceTypeID'];
+    let clearanceID = (await Student.getStudentClearanceID(id))["ClearanceID"];
+
+    console.log(clearanceTypeID);
+    console.log(clearanceID);
+    try {
+      await Clearance.populateClearanceFromClearanceFlowBasedOnClearanceTypeID(
+        clearanceID,
+        clearanceTypeID
+      );
+    } catch {
+      return { message: "Failed." };
+    }
+  } catch (e) {
+    return { message: e.message };
+  }
+
   // todo : create rows of clerance elements  in clearanc etable
 };
 const fetchClearanceTypeBasedOnCollegeID = async (collegeID) => {
@@ -80,5 +98,5 @@ module.exports = {
   fetchStudentInfo,
   isStudentRegistered,
   fetchClearanceTypeBasedOnCollegeID,
-  populateClearanceFromClearanceFlowBasedOnClearanceTypeID,
+  populateClearanceForStudentID,
 };

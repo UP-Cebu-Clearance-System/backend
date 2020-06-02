@@ -1,5 +1,6 @@
 const test = require("express").Router();
 const ClearanceDatabase = require("../models/ClearanceDatabase");
+const Student = require("../models/entities/student");
 
 
 test.get("/", async (req, res) => {
@@ -11,7 +12,7 @@ test.get("/getOne", async (req, res) => {
 
 
 test.get("/fetchStudentInfo", async (req, res) => {
-  res.send(await ClearanceDatabase.fetchStudentInfo("2018-05996"));
+  res.send(await ClearanceDatabase.fetchStudentInfo("ct-cosci-2018-05992"));
 });
 
 
@@ -30,6 +31,21 @@ test.get("/create", async (req, res) => {
     "test clearanceID",
     "test collegeID",
     "test password"
+  );
+  console.log(result);
+  res.send(result);
+});
+
+test.get("/col", async (req, res) => {
+  result = await Student.getStudentCollegeID(
+    "2018-05992"
+  );
+  console.log(result);
+  res.send(result);
+});
+test.get("/pop", async (req, res) => {
+  result = await ClearanceDatabase.populateClearanceForStudentID(
+    "2018-05992"
   );
   console.log(result);
   res.send(result);

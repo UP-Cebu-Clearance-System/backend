@@ -21,6 +21,24 @@ function getStudentPublicInfo(id) {
   });
 }
 
+function getStudentCollegeID(id){
+  const query = "SELECT CollegeID from Student WHERE StudentID = ?";
+  return new Promise(function (resolve, reject) {
+    db.get(query, [id], (err, rows) => {
+      if (err) resolve(err);
+      else resolve(rows);
+    });
+  });
+}
+function getStudentClearanceID(id){
+  const query = "SELECT ClearanceID from Student WHERE StudentID = ?";
+  return new Promise(function (resolve, reject) {
+    db.get(query, [id], (err, rows) => {
+      if (err) resolve(err);
+      else resolve(rows);
+    });
+  });
+}
 function getAllStudents() {
   const query = "SELECT * from Student";
   return new Promise(function (resolve, reject) {
@@ -68,8 +86,10 @@ function deleteStudent(id) {
 module.exports = {
   getStudent,
   getAllStudents,
+  getStudentCollegeID,
   createStudent,
   updateStudent,
   deleteStudent,
+  getStudentClearanceID,
   getStudentPublicInfo
 };
