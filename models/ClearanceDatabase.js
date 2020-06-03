@@ -43,6 +43,16 @@ const populateClearanceForStudentID = async (id) => {
 
   // todo : create rows of clerance elements  in clearanc etable
 };
+
+const applyClearance = async (cid) => {
+
+  // input cid then get clrID, name, studentID, 
+
+  // todo : add to clearance queue of specific approver
+}
+
+const 
+
 const fetchClearanceTypeBasedOnCollegeID = async (collegeID) => {
   return ClearanceType.getClearanceTypeIDBasedOnCollegeID(collegeID);
 };
