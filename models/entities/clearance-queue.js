@@ -60,12 +60,25 @@ function deleteClearanceQueue(id) {
   });
 }
 
+function enqueueClearance(cid, approverID, name, studentID, clearanceID) {
+  const query = `INSERT INTO ClearanceQueue (CID, ApproverID, StudentName, StudentID, ClearanceID, Note, Status, Remarks) Values(?,?,?,?,?,?,?,?)`;
+  return new Promise(function (resolve, reject) {
+    db.all(
+      query,
+      [cid, approverID, name, studentID, clearanceID, null, null, null],
+      (err, rows) => {
+        if (err) resolve(err);
+        else resolve({ message: "Successfully enqueued", success: true,  });
+      }
+    );
+  });
+}
+
 module.exports = {
   getClearanceQueue,
-  addClearanceToQueue,
-  getAllClearanceQueues,
-  addNoteToClearanceBasedOnCID,
-  createClearanceQueue, 
+  enqueueClearance,
+  addClearanceToQueue, 
+  addNoteToClearanceBasedOnCID, 
   deleteClearanceQueue,
   getClearanceBasedOnPriority,
 };

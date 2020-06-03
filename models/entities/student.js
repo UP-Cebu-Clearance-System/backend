@@ -20,8 +20,18 @@ function getStudentPublicInfo(id) {
     });
   });
 }
+function getStudentInfoFromClearanceID(clearanceID) {
+  const query =
+    "SELECT StudentID, Name, CollegeID  from Student WHERE ClearanceID = ?";
+  return new Promise(function (resolve, reject) {
+    db.get(query, [clearanceID], (err, rows) => {
+      if (err) resolve(err);
+      else resolve(rows);
+    });
+  });
+}
 
-function getStudentCollegeID(id){
+function getStudentCollegeID(id) {
   const query = "SELECT CollegeID from Student WHERE StudentID = ?";
   return new Promise(function (resolve, reject) {
     db.get(query, [id], (err, rows) => {
@@ -30,7 +40,7 @@ function getStudentCollegeID(id){
     });
   });
 }
-function getStudentClearanceID(id){
+function getStudentClearanceID(id) {
   const query = "SELECT ClearanceID from Student WHERE StudentID = ?";
   return new Promise(function (resolve, reject) {
     db.get(query, [id], (err, rows) => {
@@ -63,6 +73,16 @@ function createStudent(id, name, clearanceID, collegeID, password) {
   });
 }
 
+function updatePassword(id, passwd) {
+  const query = `UPDATE Student SET Password = ?  WHERE StudentID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [passwd, id], (err, rows) => {
+      if (err) resolve(err);
+      else resolve({ message: "Successfully updated" });
+    });
+  });
+}
+
 function updateStudent(params) {
   /** Must give the whole student row in exact order */
   const query = `UPDATE Student SET Name = ?, ClearanceID = ?, Status = ?, CollegeID = ?, Password = ?  WHERE StudentID = ?`;
@@ -85,11 +105,13 @@ function deleteStudent(id) {
 
 module.exports = {
   getStudent,
+  getStudentInfoFromClearanceID,
+  updatePassword,
   getAllStudents,
   getStudentCollegeID,
   createStudent,
   updateStudent,
   deleteStudent,
   getStudentClearanceID,
-  getStudentPublicInfo
+  getStudentPublicInfo,
 };
