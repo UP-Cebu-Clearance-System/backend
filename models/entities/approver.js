@@ -10,6 +10,16 @@ function getApprover(id) {
   });
 }
 
+function getApproverPublicInfo(id) {
+  const query = "SELECT ApproverID, Name, Title from Approver WHERE ApproverID = ?";
+  return new Promise(function (resolve, reject) {
+    db.get(query, [id], (err, rows) => {
+      if (err) resolve(err);
+      else resolve(rows);
+    });
+  });
+}
+
 function getAllApprovers() {
   const query = "SELECT * from Approver";
   return new Promise(function (resolve, reject) {
@@ -44,6 +54,29 @@ function updateApprover(params) {
     });
   });
 }
+
+function updatePassword(id,passwd){
+
+  const query = `UPDATE Approver SET Password = ? WHERE ApproverID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [passwd,id], (err, rows) => {
+      if (err) resolve(err);
+      else resolve({ message: "Successfully updated" });
+    });
+  }); 
+}
+
+
+function registerApprover(id,passwd){
+
+  const query = `UPDATE Approver SET Password = ? WHERE ApproverID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [passwd,id], (err, rows) => {
+      if (err) resolve(err);
+      else resolve({ message: "Successfully updated" });
+    });
+  }); 
+}
 function deleteApprover(id) {
   const query = "DELETE from Approver WHERE ApproverID = ?";
   return new Promise(function (resolve, reject) {
@@ -57,7 +90,10 @@ function deleteApprover(id) {
 module.exports = {
   getApprover,
   getAllApprovers,
+  getApproverPublicInfo,
   createApprover,
   updateApprover,
   deleteApprover,
+  updatePassword,
+  registerApprover
 };
