@@ -66,6 +66,17 @@ function createClearance(
   });
 }
 
+function addConstraint() {
+  /** Must give the whole Clearance row in exact  */
+  const query = `ALTER TABLE Clearance ADD CONSTRAINT unique_mul UNIQUE (ClearanceID, ClearanceTypeID, ApproverID, Flow)`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [], (err, rows) => {
+      if (err) reject(err);
+      else resolve({ message: "Successfully updated" });
+    });
+  });
+}
+
 function updateClearance(params) {
   /** Must give the whole Clearance row in exact  */
   const query = `UPDATE Clearance SET ClearanceTypeID = ?, ApproverID = ?,Flow  = ?, Status = ?, Remarks =? WHERE ClearanceID = ?`;
@@ -90,6 +101,7 @@ function deleteClearance(id) {
 module.exports = {
   getClearance,
   getAllClearances,
+  addConstraint,
   getClearanceInfoFromCID,
   populateClearanceBasedOnClearanceIDandClearanceTypeID,
   createClearance,

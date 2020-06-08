@@ -34,7 +34,7 @@ const studentApplyClearance = async (id, cid) => {
     console.log(clrInfo);
     clrID = clrInfo["ClearanceID"];
     let info = await Student.getStudentInfoFromClearanceID(clrID);
-    
+
     console.log(info);
     let name = info["Name"];
     let studentID = info["StudentID"];
@@ -117,6 +117,9 @@ const fetchAllClearances = async () => {
 const fetchApproverInfo = async (id) => {
   return await Approver.getApproverPublicInfo(id);
 };
+const addClearanceConstraint = async () => {
+  return await Clearance.addConstraint();
+};
 
 module.exports = {
   studentRegister,
@@ -124,6 +127,7 @@ module.exports = {
   studentApplyClearance,
   fetchClearance,
   fetchApproverInfo,
+  addClearanceConstraint,
   approverRegister,
   approverUpdatePassword,
   getAllStudents,

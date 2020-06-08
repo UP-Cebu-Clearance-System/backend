@@ -5,6 +5,14 @@ const Student = require("../models/entities/student");
 test.get("/", async (req, res) => {
   res.send(await ClearanceDatabase.fetchAllClearances());
 });
+test.get("/con", async (req, res) => {
+  res.send(await ClearanceDatabase.addClearanceConstraint());
+});
+test.get("/pop", async (req, res) => {
+  res.send(
+    await ClearanceDatabase.populateClearanceForStudentID("ct-cosci-2018-2504")
+  );
+});
 test.get("/getOne", async (req, res) => {
   res.send(await ClearanceDatabase.isStudentRegistered("testID"));
 });
@@ -33,7 +41,7 @@ test.get("/create", async (req, res) => {
 });
 
 test.get("/reg", async (req, res) => {
-  result = await ClearanceDatabase.registerStudent(
+  result = await ClearanceDatabase.studentRegister(
     "2018-2504",
     "John Doe",
     "ct-cosci-2018-2504",
@@ -55,7 +63,7 @@ test.get("/col", async (req, res) => {
   res.send(result);
 });
 test.get("/pop", async (req, res) => {
-  result = await ClearanceDatabase.populateClearanceForStudentID("2018-05992");
+  result = await ClearanceDatabase.populateClearanceForStudentID("2018-2504");
   console.log(result);
   res.send(result);
 });
