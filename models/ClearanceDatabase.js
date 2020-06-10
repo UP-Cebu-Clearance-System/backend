@@ -91,7 +91,7 @@ const approverUpdatePassword = async (id, passwd) => {
   //
 };
 
-const getAllStudents = async () => {
+const fetchAllStudentsPublicInfo = async () => {
   return await Student.getAllStudents();
 };
 
@@ -125,6 +125,7 @@ module.exports = {
   studentRegister,
   studentUpdatePassword,
   studentApplyClearance,
+  fetchAllStudentsPublicInfo,
   fetchClearance,
   fetchApproverInfo,
   addClearanceConstraint,

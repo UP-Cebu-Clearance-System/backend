@@ -50,7 +50,7 @@ function getStudentClearanceID(id) {
   });
 }
 function getAllStudents() {
-  const query = "SELECT * from Student";
+  const query = "SELECT StudentID, Name, ClearanceID, Status, CollegeID from Student";
   return new Promise(function (resolve, reject) {
     db.all(query, [], (err, rows) => {
       if (err) resolve(err);
