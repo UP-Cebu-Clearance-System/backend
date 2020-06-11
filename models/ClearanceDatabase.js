@@ -147,6 +147,22 @@ const approverRejectClearance = async (CID, remarks) => {
   // addt to top of clearance-log
   // update clearance of student
 };
+const approverRestoreClearable = async (id) => {
+  try {
+    await ClearanceLog.restoreClearable(id);
+    var res = await ClearanceLog.getNoteStatusRemarksBasedOnID(id);
+    console.log(res);
+    await Clearance.updateClearable(
+      res["CID"], 
+      res["Status"],
+      res["Remarks"]
+    );
+
+    return { message: "Success", success: true };
+  } catch (e) {
+    return { message: "Failed.", error: e, success: false };
+  }
+};
 
 const fetchAllStudentsPublicInfo = async () => {
   return await Student.getAllStudents();
@@ -197,4 +213,5 @@ module.exports = {
   isStudentRegistered,
   fetchClearanceTypeBasedOnCollegeID,
   populateClearanceForStudentID,
+  approverRestoreClearable,
 };

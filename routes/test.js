@@ -65,7 +65,13 @@ test.get("/log", async (req, res) => {
 });
 
 test.get("/rej", async (req, res) => {
-  result = await ClearanceDatabase.approverRejectClearance(15, "yawa ka");
+  result = await ClearanceDatabase.approverRejectClearance(15, "bad ka");
+  console.log(result);
+  res.send(result);
+});
+
+test.get("/res", async (req, res) => {
+  result = await ClearanceDatabase.approverRestoreClearable(5);
   console.log(result);
   res.send(result);
 });

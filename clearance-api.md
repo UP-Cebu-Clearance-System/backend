@@ -140,3 +140,62 @@ https://xxxxxx
 ```
 https://xxxxxx
 ```
+
+
+### Sign a clearance with remarks
+`approverSignClearanceWithRemarks()`
+- Parameters
+    - CID, remarks
+- Response
+    - Success of Query
+
+```
+https://xxxxxx
+```
+
+### Sign a clearance  only
+`approverSignClearance()`
+- Parameters
+    - CID
+- Response
+    - Success of Query
+
+```
+https://xxxxxx
+```
+
+
+### Add private note to Clearable (only visible to approver)
+`approverAddNoteToClearable()`
+- Parameters
+    - CID, Note
+- Response
+    - Success of Query
+
+```
+https://xxxxxx
+```
+
+
+### Reject a clearance. 
+`approverRejectClearance()`
+- Parameters
+    - CID,Remarks
+- Response
+    - Success of Query
+
+```
+https://xxxxxx
+```
+
+### Restore a Clearance, given id from ClearanceLog. This returns Clearable to ClearanceQueue and restores snapshot of Clearable in ClearanceLog
+`approverRestoreClearable()`
+- Parameters
+    - id
+- Response
+    - Success of Query
+
+```
+https://xxxxxx
+```
+

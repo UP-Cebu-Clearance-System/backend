@@ -11,7 +11,8 @@ function getClearableOnLogBasedOnID(ID) {
 }
 
 function getClearanceLog(approverID) {
-  const query = "SELECT * from ClearanceLog WHERE ApproverID = ? ORDER BY ID DESC";
+  const query =
+    "SELECT * from ClearanceLog WHERE ApproverID = ? ORDER BY ID DESC";
   return new Promise(function (resolve, reject) {
     db.all(query, [approverID], (err, rows) => {
       if (err) resolve({ message: "Failed", error: err, success: false });
@@ -39,7 +40,6 @@ function deleteClearable(ID) {
     });
   });
 }
- 
 
 function logClearable(cid, timestamp) {
   const query = `INSERT INTO ClearanceLog (ID, CID, ApproverID, StudentName, StudentID, ClearanceID, Note, Status, Remarks,Timestamp) select NULL as ID, CID, ApproverID, StudentName, StudentID, ClearanceID, Note, Status, Remarks, ? from ClearanceQueue where CID = ?`;
@@ -51,9 +51,31 @@ function logClearable(cid, timestamp) {
   });
 }
 
+function restoreClearable(id) {
+  const query = `INSERT INTO ClearanceQueue (CID, ApproverID, StudentName, StudentID, ClearanceID, Note, Status, Remarks) select CID, ApproverID, StudentName, StudentID, ClearanceID, Note, Status, Remarks from ClearanceLog where ID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [id], (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully restored", success: true });
+    });
+  });
+}
+function getNoteStatusRemarksBasedOnID(ID) {
+  const query =
+    "SELECT CID, Status, Remarks from ClearanceLog WHERE ID = ?";
+  return new Promise(function (resolve, reject) {
+    db.get(query, [ID], (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve(rows);
+    });
+  });
+}
+
 module.exports = {
   getClearableOnLogBasedOnID,
+  restoreClearable,
   getClearanceLog,
   deleteClearable,
   logClearable,
+  getNoteStatusRemarksBasedOnID,
 };
