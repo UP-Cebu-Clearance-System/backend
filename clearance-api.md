@@ -72,7 +72,10 @@ https://xxxxxx
 ### Register student
 `studentRegister()`
 - Parameters
-    - StudentID, Name, CollegeID, Password
+    - StudentID, 
+    - Name
+    - CollegeID
+    - Password
 - Response
     - Success of Query
 
@@ -92,7 +95,8 @@ https://xxxxxx
 ### Update password
 `studentUpdatePassword()`
 - Parameters
-    - StudentID, Password
+    - StudentID
+    - Password
 - Response
     - Success of Query
 
@@ -102,7 +106,8 @@ https://xxxxxx
 ### Apply clearable and enqueue to approver
 `studentApplyClearance()`
 - Parameters
-    - StudentID, cid
+    - StudentID
+    - cid
 - Response
     - Success of Query
 

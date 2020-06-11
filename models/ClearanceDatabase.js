@@ -4,6 +4,7 @@ const ClearanceType = require("./entities/clearance-type");
 const College = require("./entities/college");
 const Clearance = require("./entities/clearance");
 const ClearanceQueue = require("./entities/clearance-queue");
+const ClearanceLog = require("./entities/clearance-log");
 const ClearanceFlow = require("./entities/clearance-flow");
 const Approver = require("./entities/approver");
 const Admin = require("./entities/admin");
@@ -28,7 +29,7 @@ const studentUpdateInformation = async () => {
   // todo update info
 };
 
-const studentApplyClearance = async (id, cid) => {
+const studentApplyClearable = async (id, cid) => {
   try {
     let clrInfo = await Clearance.getClearanceInfoFromCID(cid);
     console.log(clrInfo);
@@ -44,6 +45,18 @@ const studentApplyClearance = async (id, cid) => {
     if (studentID != id) {
       return { message: "Unauthorized" };
     }
+
+    await ClearanceLog.logClearable(
+      cid,
+      apprvrID,
+      name,
+      studentID,
+      clrID,
+      null,
+      null,
+      null,
+      new Date().toTimeString()
+    );
 
     return await ClearanceQueue.enqueueClearance(
       cid,
@@ -91,6 +104,12 @@ const approverUpdatePassword = async (id, passwd) => {
   //
 };
 
+const approverSignClearance = async (CID, remarks) => {};
+
+const approverAddNoteToClearance = async (CID, note) => {};
+
+const approverRejectClearance = async (CID, remarks) => {};
+
 const fetchAllStudentsPublicInfo = async () => {
   return await Student.getAllStudents();
 };
@@ -124,7 +143,7 @@ const addClearanceConstraint = async () => {
 module.exports = {
   studentRegister,
   studentUpdatePassword,
-  studentApplyClearance,
+  studentApplyClearable,
   fetchAllStudentsPublicInfo,
   fetchClearance,
   fetchApproverInfo,
