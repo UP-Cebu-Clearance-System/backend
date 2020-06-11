@@ -2,6 +2,7 @@ const test = require("express").Router();
 const ClearanceDatabase = require("../models/ClearanceDatabase");
 const Student = require("../models/entities/student");
 
+const ClearanceLog = require("../models/entities/clearance-log");
 test.get("/", async (req, res) => {
   res.send(await ClearanceDatabase.fetchAllClearances());
 });
@@ -53,7 +54,18 @@ test.get("/reg", async (req, res) => {
 });
 
 test.get("/app", async (req, res) => {
-  result = await ClearanceDatabase.studentApplyClearance("2018-2504", "218");
+  result = await ClearanceDatabase.studentApplyClearable("2018-2504", 15);
+  console.log(result);
+  res.send(result);
+});
+test.get("/log", async (req, res) => {
+  result = await ClearanceLog.logClearable(15, new Date().toISOString());
+  console.log(result);
+  res.send(result);
+});
+
+test.get("/rej", async (req, res) => {
+  result = await ClearanceDatabase.approverRejectClearance(15, "yawa ka");
   console.log(result);
   res.send(result);
 });
@@ -62,6 +74,7 @@ test.get("/col", async (req, res) => {
   console.log(result);
   res.send(result);
 });
+
 test.get("/pop", async (req, res) => {
   result = await ClearanceDatabase.populateClearanceForStudentID("2018-2504");
   console.log(result);

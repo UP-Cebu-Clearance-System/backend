@@ -46,25 +46,16 @@ const studentApplyClearable = async (id, cid) => {
       return { message: "Unauthorized" };
     }
 
-    await ClearanceLog.logClearable(
-      cid,
-      apprvrID,
-      name,
-      studentID,
-      clrID,
-      null,
-      null,
-      null,
-      new Date().toTimeString()
-    );
-
-    return await ClearanceQueue.enqueueClearance(
+    await ClearanceQueue.enqueueClearable(
       cid,
       apprvrID,
       name,
       studentID,
       clrID
     );
+
+    await ClearanceLog.logClearable(cid, new Date().toISOString());
+    return { message: "Successfully applied!", success: true };
   } catch (e) {
     return { message: "Failed to apply", error: e.message };
   }
@@ -90,7 +81,7 @@ const populateClearanceForStudentID = async (id) => {
     );
   } catch (e) {
     console.log(e);
-    return { message: "Failed retrieving", success: false };
+    return { message: "Failed retrieving", error: e, success: false };
   }
 
   // todo : create rows of clerance elements  in clearanc etable
@@ -104,11 +95,58 @@ const approverUpdatePassword = async (id, passwd) => {
   //
 };
 
-const approverSignClearance = async (CID, remarks) => {};
+const approverSignClearanceWithRemarks = async (CID, remarks) => {
+  try {
+    await ClearanceQueue.updateClearableStatus(CID, "Signed");
+    await ClearanceQueue.updateClearableRemarks(CID, remarks);
+    await ClearanceLog.logClearable(CID, new Date().toISOString());
+    await ClearanceQueue.deleteClearable(CID);
+    await Clearance.updateClearableRemarks(CID, remarks);
+    await Clearance.updateClearableStatus(CID, "Signed");
 
-const approverAddNoteToClearance = async (CID, note) => {};
+    return { message: "Success", success: true };
+  } catch (e) {
+    return { message: "Failed.", error: e, success: false };
+  }
+};
+const approverSignClearance = async (CID) => {
+  try {
+    await ClearanceQueue.updateClearableStatus(CID, "Signed");
+    await ClearanceLog.logClearable(CID, new Date().toISOString());
+    await ClearanceQueue.deleteClearable(CID);
+    await Clearance.updateClearableStatus(CID, "Signed");
 
-const approverRejectClearance = async (CID, remarks) => {};
+    return { message: "Success", success: true };
+  } catch (e) {
+    return { message: "Failed.", error: e, success: false };
+  }
+  //
+};
+
+const approverAddNoteToClearable = async (CID, note) => {
+  return ClearanceQueue.updateClearableNote(CID, note);
+};
+
+const approverRejectClearance = async (CID, remarks) => {
+  try {
+    await ClearanceQueue.updateClearableStatus(CID, "Rejected");
+    await ClearanceQueue.updateClearableRemarks(CID, remarks);
+    await ClearanceLog.logClearable(CID, new Date().toISOString());
+    await ClearanceQueue.deleteClearable(CID);
+    await Clearance.updateClearableRemarks(CID, remarks);
+    await Clearance.updateClearableStatus(CID, "Rejected");
+
+    return { message: "Success", success: true };
+  } catch (e) {
+    return { message: "Failed.", error: e, success: false };
+  }
+
+  // remarrrks can't be null
+  // update clearance queue to rejected and add remarks
+  // remove from clearance queue
+  // addt to top of clearance-log
+  // update clearance of student
+};
 
 const fetchAllStudentsPublicInfo = async () => {
   return await Student.getAllStudents();
@@ -141,6 +179,10 @@ const addClearanceConstraint = async () => {
 };
 
 module.exports = {
+  approverSignClearanceWithRemarks,
+  approverSignClearance,
+  approverAddNoteToClearable,
+  approverRejectClearance,
   studentRegister,
   studentUpdatePassword,
   studentApplyClearable,
@@ -150,7 +192,6 @@ module.exports = {
   addClearanceConstraint,
   approverRegister,
   approverUpdatePassword,
-  getAllStudents,
   fetchAllClearances,
   fetchStudentInfo,
   isStudentRegistered,
