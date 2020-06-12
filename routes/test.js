@@ -2,8 +2,17 @@ const test = require("express").Router();
 const ClearanceDatabase = require("../models/ClearanceDatabase");
 const Student = require("../models/entities/student");
 
+const ClearanceLog = require("../models/entities/clearance-log");
 test.get("/", async (req, res) => {
   res.send(await ClearanceDatabase.fetchAllClearances());
+});
+test.get("/con", async (req, res) => {
+  res.send(await ClearanceDatabase.addClearanceConstraint());
+});
+test.get("/pop", async (req, res) => {
+  res.send(
+    await ClearanceDatabase.populateClearanceForStudentID("ct-cosci-2018-2504")
+  );
 });
 test.get("/getOne", async (req, res) => {
   res.send(await ClearanceDatabase.isStudentRegistered("testID"));
@@ -33,7 +42,7 @@ test.get("/create", async (req, res) => {
 });
 
 test.get("/reg", async (req, res) => {
-  result = await ClearanceDatabase.registerStudent(
+  result = await ClearanceDatabase.studentRegister(
     "2018-2504",
     "John Doe",
     "ct-cosci-2018-2504",
@@ -45,7 +54,24 @@ test.get("/reg", async (req, res) => {
 });
 
 test.get("/app", async (req, res) => {
-  result = await ClearanceDatabase.studentApplyClearance("2018-2504", "218");
+  result = await ClearanceDatabase.studentApplyClearable("2018-2504", 15);
+  console.log(result);
+  res.send(result);
+});
+test.get("/log", async (req, res) => {
+  result = await ClearanceLog.logClearable(15, new Date().toISOString());
+  console.log(result);
+  res.send(result);
+});
+
+test.get("/rej", async (req, res) => {
+  result = await ClearanceDatabase.approverRejectClearance(15, "bad ka");
+  console.log(result);
+  res.send(result);
+});
+
+test.get("/res", async (req, res) => {
+  result = await ClearanceDatabase.approverRestoreClearable(5);
   console.log(result);
   res.send(result);
 });
@@ -54,8 +80,9 @@ test.get("/col", async (req, res) => {
   console.log(result);
   res.send(result);
 });
+
 test.get("/pop", async (req, res) => {
-  result = await ClearanceDatabase.populateClearanceForStudentID("2018-05992");
+  result = await ClearanceDatabase.populateClearanceForStudentID("2018-2504");
   console.log(result);
   res.send(result);
 });

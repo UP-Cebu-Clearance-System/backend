@@ -4,7 +4,7 @@ function getClearance(id) {
   const query = "SELECT * from Clearance WHERE ClearanceID = ?";
   return new Promise(function (resolve, reject) {
     db.all(query, [id], (err, rows) => {
-      if (err) resolve(err);
+      if (err) resolve({ message: "Failed", error: err, success: false });
       else resolve(rows);
     });
   });
@@ -14,7 +14,7 @@ function getClearanceInfoFromCID(cid) {
   const query = "SELECT * from Clearance WHERE CID = ?";
   return new Promise(function (resolve, reject) {
     db.get(query, [cid], (err, rows) => {
-      if (err) resolve(err);
+      if (err) resolve({ message: "Failed", error: err, success: false });
       else resolve(rows);
     });
   });
@@ -24,7 +24,7 @@ function getAllClearances() {
   const query = "SELECT * from Clearance";
   return new Promise(function (resolve, reject) {
     db.all(query, [], (err, rows) => {
-      if (err) resolve(err);
+      if (err) resolve({ message: "Failed", error: err, success: false });
       else resolve(rows);
     });
   });
@@ -59,20 +59,61 @@ function createClearance(
       query,
       [clearanceID, clearanceTypeID, approverID, flow, status, remarks],
       (err, rows) => {
-        if (err) resolve(err);
+        if (err) resolve({ message: "Failed", error: err, success: false });
         else resolve({ message: "Successfully created" });
       }
     );
   });
 }
 
-function updateClearance(params) {
+function addConstraint() {
   /** Must give the whole Clearance row in exact  */
-  const query = `UPDATE Clearance SET ClearanceTypeID = ?, ApproverID = ?,Flow  = ?, Status = ?, Remarks =? WHERE ClearanceID = ?`;
+  const query = `ALTER TABLE Clearance ADD CONSTRAINT unique_mul UNIQUE (ClearanceID, ClearanceTypeID, ApproverID, Flow)`;
   return new Promise(function (resolve, reject) {
-    db.all(query, params, (err, rows) => {
-      if (err) reject(err);
-      else resolve({ message: "Successfully updated" });
+    db.all(query, [], (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully updated", success: true });
+    });
+  });
+}
+
+// function updateClearance(params) {
+//   /** Must give the whole Clearance row in exact  */
+//   const query = `UPDATE Clearance SET ClearanceTypeID = ?, ApproverID = ?,Flow  = ?, Status = ?, Remarks =? WHERE ClearanceID = ?`;
+//   return new Promise(function (resolve, reject) {
+//     db.all(query, params, (err, rows) => {
+//       if (err) resolve({message:"Failed", error: err, success:false});
+//       else resolve({ message: "Successfully updated" , success:true});
+//     });
+//   });
+// }
+function updateClearableStatus(cid, status) {
+  /** Must give the whole Clearance row in exact  */
+  const query = `UPDATE Clearance SET Status = ? WHERE CID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [status, cid], (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully updated status" });
+    });
+  });
+}
+function updateClearable(cid,  status, remarks) {
+  /** Must give the whole Clearance row in exact  */
+  const query = `UPDATE Clearance SET Status = ?, Remarks = ? WHERE CID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [ status, remarks, cid], (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully updated status" });
+    });
+  });
+}
+function updateClearableRemarks(cid, remarks) {
+  /** Must give the whole Clearance row in exact  */
+  const query = `UPDATE Clearance SET Remarks = ? WHERE CID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [remarks, cid], (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully updated remarks" });
     });
   });
 }
@@ -81,18 +122,22 @@ function deleteClearance(id) {
   const query = "DELETE from Clearance WHERE ClearanceID = ?";
   return new Promise(function (resolve, reject) {
     db.run(query, [id], (err, rows) => {
-      if (err) resolve(err);
-      else resolve({ message: "Successfully deleted" });
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully deleted", success: true });
     });
   });
 }
 
 module.exports = {
+  updateClearableRemarks,
+  updateClearableStatus,
   getClearance,
   getAllClearances,
+  addConstraint,
   getClearanceInfoFromCID,
   populateClearanceBasedOnClearanceIDandClearanceTypeID,
   createClearance,
-  updateClearance,
+  // updateClearance,
   deleteClearance,
+  updateClearable,
 };

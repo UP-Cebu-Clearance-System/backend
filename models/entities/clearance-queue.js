@@ -1,84 +1,100 @@
 const { db } = require("../../db");
 
-function getClearanceBasedOnPriority(pID) {
-  const query = "SELECT * from ClearanceQueue WHERE PriorityID = ?";
+function getClearableBasedOnCID(CID) {
+  const query = "SELECT * from ClearanceQueue WHERE CID = ?";
   return new Promise(function (resolve, reject) {
-    db.get(query, [pID], (err, rows) => {
-      if (err) resolve(err);
+    db.get(query, [CID], (err, rows) => {
+      if (err) resolve({message:"Failed", error: err, success:false});
       else resolve(rows);
     });
   });
 }
 
-function getClearanceQueue() {
-  const query = "SELECT * from ClearanceQueue";
+function getClearanceQueue(approverID) {
+  const query = "SELECT * from ClearanceQueue WHERE ApproverID = ?";
   return new Promise(function (resolve, reject) {
-    db.all(query, [], (err, rows) => {
-      if (err) resolve(err);
+    db.all(query, [approverID], (err, rows) => {
+      if (err) resolve({message:"Failed", error: err, success:false});
       else resolve(rows);
     });
   });
 }
 
-function addClearanceToQueue(CID) {
-  const query = `INSERT INTO ClearanceQueue (CID) Values(?,)`;
+// function updateClearable(CID, note, status, remarks) {
+//   var inp = [note, status, remarks, CID];
+//   const query = `UPDATE ClearanceQueue SET ${note != null ? "Note = ?" : ""} ${
+//     status != null ? "Status = ?" : ""
+//   }, ${remarks != null ? "Remarks = ?" : " "} WHERE CID = ?`;
+
+//   if (note == null) {
+//   }
+//   return new Promise(function (resolve, reject) {
+//     db.all(query, inp, (err, rows) => {
+//       if (err) resolve({message:"Failed", error: err, success:false});
+//       else resolve({ message: "Successfully updated" , success:true});
+//     });
+//   });
+// }
+
+function updateClearableNote(CID, note) {
+  const query = `UPDATE ClearanceQueue SET Note = ?  WHERE CID = ?`;
   return new Promise(function (resolve, reject) {
-    db.all(query, [CID], (err, rows) => {
-      if (err) resolve(err);
-      else resolve({ message: "Successfully created" });
+    db.all(query, [note,   CID], (err, rows) => {
+      if (err) resolve({message:"Failed", error: err, success:false});
+      else resolve({ message: "Successfully updated" , success:true});
     });
   });
 }
 
-function updateClearanceQueue(params) {
-  /** Must give the whole ClearanceQueue row in exact Queue */
-  const query = `UPDATE ClearanceQueue SET CID = ?, ClearanceID = ?, Note = ? WHERE PriorityID = ?`;
+function updateClearableStatus(CID, status) {
+  const query = `UPDATE ClearanceQueue SET Status = ?  WHERE CID = ?`;
   return new Promise(function (resolve, reject) {
-    db.all(query, params, (err, rows) => {
-      if (err) reject(err);
-      else resolve({ message: "Successfully updated" });
-    });
-  });
-}
-function addNoteToClearanceBasedOnCID(note) {
-  const query = `UPDATE ClearanceQueue SET Note = ? WHERE CID = ?`;
-  return new Promise(function (resolve, reject) {
-    db.all(query, params, (err, rows) => {
-      if (err) reject(err);
-      else resolve({ message: "Successfully updated" });
+    db.all(query, [  status,  CID], (err, rows) => {
+      if (err) resolve({message:"Failed", error: err, success:false});
+      else resolve({ message: "Successfully updated" , success:true});
     });
   });
 }
 
-function deleteClearanceQueue(id) {
-  const query = "DELETE from ClearanceQueue WHERE PriorityID = ?";
+function updateClearableRemarks(CID, remarks) {
+  const query = `UPDATE ClearanceQueue SET Remarks = ? WHERE CID = ?`;
   return new Promise(function (resolve, reject) {
-    db.run(query, [id], (err, rows) => {
-      if (err) resolve(err);
-      else resolve({ message: "Successfully deleted" });
+    db.all(query, [  remarks, CID], (err, rows) => {
+      if (err) resolve({message:"Failed", error: err, success:false});
+      else resolve({ message: "Successfully updated" , success:true});
+    });
+  });
+}
+function deleteClearable(CID) {
+  const query = "DELETE from ClearanceQueue WHERE CID = ?";
+  return new Promise(function (resolve, reject) {
+    db.run(query, [CID], (err, rows) => {
+      if (err) resolve({message:"Failed", error: err, success:false});
+      else resolve({ message: "Successfully deleted" , success:true});
     });
   });
 }
 
-function enqueueClearance(cid, approverID, name, studentID, clearanceID) {
+function enqueueClearable(cid, approverID, name, studentID, clearanceID) {
   const query = `INSERT INTO ClearanceQueue (CID, ApproverID, StudentName, StudentID, ClearanceID, Note, Status, Remarks) Values(?,?,?,?,?,?,?,?)`;
   return new Promise(function (resolve, reject) {
     db.all(
       query,
       [cid, approverID, name, studentID, clearanceID, null, null, null],
       (err, rows) => {
-        if (err) resolve(err);
-        else resolve({ message: "Successfully enqueued", success: true,  });
+        if (err) resolve({message:"Failed", error: err, success:false});
+        else resolve({ message: "Successfully enqueued", success: true });
       }
     );
   });
 }
 
 module.exports = {
-  getClearanceQueue,
-  enqueueClearance,
-  addClearanceToQueue, 
-  addNoteToClearanceBasedOnCID, 
-  deleteClearanceQueue,
-  getClearanceBasedOnPriority,
+  getClearableBasedOnCID,
+  getClearanceQueue, 
+  deleteClearable,
+  enqueueClearable,
+  updateClearableNote,
+  updateClearableStatus,
+  updateClearableRemarks,
 };
