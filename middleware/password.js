@@ -1,6 +1,6 @@
  
 const { hash, compare } = require('bcrypt')
-const { getStudent } = require('../models/entities/student')
+const { getStudent } = require('../models/tables/student')
 
 const hashPassword = async (req, res, next) => {
     try {

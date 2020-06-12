@@ -1,5 +1,5 @@
-const { getStudent } = require('../models/entities/student')
-const { getApprover } = require('../models/entities/approver')
+const { getStudent } = require('../models/tables/student')
+const { getApprover } = require('../models/tables/approver')
 
 const studentInfo = async(req, res, next) => {
     const id = req.body.id

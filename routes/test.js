@@ -1,8 +1,8 @@
 const test = require("express").Router();
 const ClearanceDatabase = require("../models/ClearanceDatabase");
-const Student = require("../models/entities/student");
+const Student = require("../models/tables/student");
 
-const ClearanceLog = require("../models/entities/clearance-log");
+const ClearanceLog = require("../models/tables/clearance-log");
 test.get("/", async (req, res) => {
   res.send(await ClearanceDatabase.fetchAllClearances());
 });
