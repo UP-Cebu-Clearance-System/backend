@@ -152,16 +152,16 @@ const approverRestoreClearable = async (id) => {
     await ClearanceLog.restoreClearable(id);
     var res = await ClearanceLog.getNoteStatusRemarksBasedOnID(id);
     console.log(res);
-    await Clearance.updateClearable(
-      res["CID"], 
-      res["Status"],
-      res["Remarks"]
-    );
+    await Clearance.updateClearable(res["CID"], res["Status"], res["Remarks"]);
 
     return { message: "Success", success: true };
   } catch (e) {
     return { message: "Failed.", error: e, success: false };
   }
+};
+
+const approverFetchClearanceQueue = async (approverID) => {
+  return await ClearanceQueue.getClearanceQueue(approverID);
 };
 
 const fetchAllStudentsPublicInfo = async () => {
@@ -196,6 +196,7 @@ const addClearanceConstraint = async () => {
 
 module.exports = {
   approverSignClearanceWithRemarks,
+  approverFetchClearanceQueue,
   approverSignClearance,
   approverAddNoteToClearable,
   approverRejectClearance,

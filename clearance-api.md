@@ -34,7 +34,7 @@ https://xxxxxx
 ```
  
  ### fetch All Clearances
-`fetchAllClearancesfetchAllClearances()`
+`fetchAllClearances()`
 - Parameters
     - None
 - Response
