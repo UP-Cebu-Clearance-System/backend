@@ -72,7 +72,7 @@ const populateClearanceForStudentID = async (id) => {
     console.log(clearanceTypeID);
     console.log(clearanceID);
 
-    await Clearance.populateClearanceBasedOnClearanceIDandClearanceTypeID(
+    return Clearance.populateClearanceBasedOnClearanceIDandClearanceTypeID(
       clearanceID,
       clearanceTypeID
     );

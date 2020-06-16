@@ -43,9 +43,9 @@ test.get("/create", async (req, res) => {
 
 test.get("/reg", async (req, res) => {
   result = await ClearanceDatabase.studentRegister(
-    "2018-2504",
-    "John Doe",
-    "ct-cosci-2018-2504",
+    "2018-2999",
+    "Jane Doe",
+    "ct-cosci-2018-2999",
     "cosci",
     "test password"
   );
