@@ -40,18 +40,20 @@ const studentApplyClearable = async (id, cid) => {
     let name = info["Name"];
     let studentID = info["StudentID"];
     let apprvrID = clrInfo["ApproverID"];
+    let status = clrInfo["Status"];
     console.log(studentID);
     console.log(id);
     if (studentID != id) {
       return { message: "Unauthorized" };
     }
+    await Clearance.updateClearableStatus(cid, "Pending");
 
     await ClearanceQueue.enqueueClearable(
       cid,
       apprvrID,
       name,
       studentID,
-      clrID
+      clrID,status
     );
 
     await ClearanceLog.logClearable(cid, new Date().toISOString());

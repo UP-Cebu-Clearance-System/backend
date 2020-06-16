@@ -54,7 +54,7 @@ test.get("/reg", async (req, res) => {
 });
 
 test.get("/app", async (req, res) => {
-  result = await ClearanceDatabase.studentApplyClearable("2018-2504", 15);
+  result = await ClearanceDatabase.studentApplyClearable("2018-2999", 1);
   console.log(result);
   res.send(result);
 });
