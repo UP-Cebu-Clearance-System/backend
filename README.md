@@ -18,7 +18,7 @@ or at https://clearance.herokuapp.com
 ## Endpoints
 - POST  /signup/student
     - request body: 
-        ```json
+        ```js
         {
             "id": "0000-00000", // student id: string
             "name": "John Doe", // name: string
@@ -27,7 +27,7 @@ or at https://clearance.herokuapp.com
         }
         ```
     - response
-        ```json
+        ```js
         {
             "message": "Error/Success", // error or success message
             "success": true // success: boolean
@@ -35,7 +35,7 @@ or at https://clearance.herokuapp.com
         ```
 - POST /signup/approver
     - request body:
-        ```json
+        ```js
         {
             "id": "abcd-efgh", // aprrover id: string
             "name": "Jane Doe", // name: string
@@ -46,7 +46,7 @@ or at https://clearance.herokuapp.com
         }
         ```
     - response
-        ```json
+        ```js
         {
             "message": "Error/Success", // error or success message
             "success": true // success: boolean
@@ -54,41 +54,41 @@ or at https://clearance.herokuapp.com
         ```
 - POST /login/student
     - request body:
-        ```json
+        ```js
         {
             "id": "0000-00000", // id: string
             "password": "password" // password: string
         }
         ```
     - response
-        ```json
+        ```js
         {
             "accessToken": "Token"
         }
         ```
 - POST /login/approver
     - request body:
-        ```json
+        ```js
         {
             "id": "0000-00000", // id: string
             "password": "password" // password: string
         }
         ```
     - response
-        ```json
+        ```js
         {
             "accessToken": "Token"
         }
         ```
 - GET /clearance
     - Headers
-        ```json
+        ```js
         {
             "Authorization": "Bearer <token>"
         }
         ```
     - response
-        ```json
+        ```js
         [
            {
                 "CID": 0000,
@@ -103,8 +103,24 @@ or at https://clearance.herokuapp.com
         ]
         ```
         or
-        ```json
+        ```js
         {
             "message": "Invalid token."
         }
+        ```
+- GET /approver
+    - Headers
+        ```js
+        {
+            "Authorization": "Bearer <token>"
+        }
+        ```
+    - response
+        ```js
+        [
+            {
+
+            },
+            ...
+        ]
         ```
