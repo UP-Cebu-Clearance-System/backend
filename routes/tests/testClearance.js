@@ -1,5 +1,5 @@
 const test = require("express").Router(); 
-const Clearance = require("../models/entities/clearance");
+const Clearance = require("../models/tables/clearance");
 
 test.get("/", async (req, res) => {
   res.send(await Clearance.getAllClearances());

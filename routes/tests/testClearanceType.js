@@ -1,5 +1,5 @@
 const test = require("express").Router();
-const ClearanceType = require("../models/entities/clearance-type");
+const ClearanceType = require("../models/tables/clearance-type");
 
 test.get("/", async (req, res) => {
   res.send(await ClearanceType.getAllClearanceTypes());

@@ -1,5 +1,5 @@
 const test = require("express").Router();
-const College = require("../models/entities/college");
+const College = require("../models/tables/college");
 
 test.get("/", async (req, res) => {
   res.send(await College.getAllColleges());

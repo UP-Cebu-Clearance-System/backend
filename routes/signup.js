@@ -1,7 +1,7 @@
 const signup = require('express').Router()
 const { hashPassword } = require('../middleware/password')
 const { studentRegister } = require('../models/ClearanceDatabase')
-const { createApprover } = require('../models/entities/approver')
+const { createApprover } = require('../models/tables/approver')
 
 signup.post('/student', hashPassword, async(req, res) => {
     const result = await studentRegister(req.body.id, req.body.name, `ct-${req.body.collegeID}-${req.body.id}`, req.body.collegeID, req.body.password)

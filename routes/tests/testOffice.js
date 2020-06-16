@@ -1,5 +1,5 @@
 const test = require("express").Router();
-const Office = require("../models/entities/office");
+const Office = require("../models/tables/office");
 
 test.get("/", async (req, res) => {
   res.send(await Office.getAllOffices());

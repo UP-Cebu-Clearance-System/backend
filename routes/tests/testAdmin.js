@@ -1,5 +1,5 @@
 const test = require("express").Router();
-const Admin = require("../models/entities/admin");
+const Admin = require("../models/tables/admin");
 
 test.get("/", async (req, res) => {
   res.send(await Admin.getAllAdmins());

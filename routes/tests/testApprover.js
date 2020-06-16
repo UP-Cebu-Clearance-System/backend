@@ -1,5 +1,5 @@
 const test = require("express").Router();
-const Approver = require("../models/entities/approver");
+const Approver = require("../models/tables/approver");
 
 test.get("/", async (req, res) => {
   res.send(await Approver.getAllApprovers());

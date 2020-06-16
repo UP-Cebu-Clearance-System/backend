@@ -1,8 +1,8 @@
 const test = require("express").Router();
 const ClearanceDatabase = require("../models/ClearanceDatabase");
-const Student = require("../models/entities/student");
+const Student = require("../models/tables/student");
 
-const ClearanceLog = require("../models/entities/clearance-log");
+const ClearanceLog = require("../models/tables/clearance-log");
 test.get("/", async (req, res) => {
   res.send(await ClearanceDatabase.fetchAllClearances());
 });
@@ -43,9 +43,9 @@ test.get("/create", async (req, res) => {
 
 test.get("/reg", async (req, res) => {
   result = await ClearanceDatabase.studentRegister(
-    "2018-2504",
-    "John Doe",
-    "ct-cosci-2018-2504",
+    "2018-2999",
+    "Jane Doe",
+    "ct-cosci-2018-2999",
     "cosci",
     "test password"
   );
@@ -54,7 +54,7 @@ test.get("/reg", async (req, res) => {
 });
 
 test.get("/app", async (req, res) => {
-  result = await ClearanceDatabase.studentApplyClearable("2018-2504", 15);
+  result = await ClearanceDatabase.studentApplyClearable("2018-2999", 1);
   console.log(result);
   res.send(result);
 });
