@@ -108,3 +108,19 @@ or at https://clearance.herokuapp.com
             "message": "Invalid token."
         }
         ```
+- GET /approver
+    - Headers
+        ```js
+        {
+            "Authorization": "Bearer <token>"
+        }
+        ```
+    - response
+        ```js
+        [
+            {
+
+            },
+            ...
+        ]
+        ```
