@@ -9,10 +9,10 @@ const ClearanceFlow = require("./tables/clearance-flow");
 const Approver = require("./tables/approver");
 const Admin = require("./tables/admin");
 
-const studentRegister = async (id, name, clearanceID, collegeID, password) => {
+const studentRegister = async (id, name, collegeID, password) => {
   let isRegistered = await isStudentRegistered(id);
   if (!isRegistered) {
-    await Student.createStudent(id, name, clearanceID, collegeID, password);
+    await Student.createStudent(id, name, `ct-${collegeID}-${id}`, collegeID, password);
     return await populateClearanceForStudentID(id);
   } else {
     return { message: "Failed. Student already registered" };
