@@ -22,7 +22,7 @@ or at https://clearance.herokuapp.com
         {
             "id": "0000-00000", // student id: string
             "name": "John Doe", // name: string
-            "collegeID": "aaa", // collegeID: string
+            "collegeID": "aaa", // collegeID: string, [cosci (for College of Science), cosoc (Social Science), coaac (Arts and Communication), cosom (Management)]
             "password": "password" // password: string
         }
         ```
