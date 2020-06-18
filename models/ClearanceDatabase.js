@@ -12,7 +12,13 @@ const Admin = require("./tables/admin");
 const studentRegister = async (id, name, collegeID, password) => {
   let isRegistered = await isStudentRegistered(id);
   if (!isRegistered) {
-    await Student.createStudent(id, name, `ct-${collegeID}-${id}`, collegeID, password);
+    await Student.createStudent(
+      id,
+      name,
+      `ct-${collegeID}-${id}`,
+      collegeID,
+      password
+    );
     return await populateClearanceForStudentID(id);
   } else {
     return { message: "Failed. Student already registered" };
@@ -53,7 +59,8 @@ const studentApplyClearable = async (id, cid) => {
       apprvrID,
       name,
       studentID,
-      clrID,status
+      clrID,
+      status
     );
 
     await ClearanceLog.logClearable(cid, new Date().toISOString());
@@ -61,6 +68,14 @@ const studentApplyClearable = async (id, cid) => {
   } catch (e) {
     return { message: "Failed to apply", error: e.message, success: false };
   }
+};
+
+const studentCancelClearableApplication = async (cid) => {
+  try {
+    // delete from clearance queue
+    // add log to clearance log
+    // remarks on clearance log, cancelled by student
+  } catch (e) {}
 };
 
 const populateClearanceForStudentID = async (id) => {
