@@ -12,8 +12,15 @@ const Admin = require("./tables/admin");
 const studentRegister = async (id, name, collegeID, password) => {
   let isRegistered = await isStudentRegistered(id);
   if (!isRegistered) {
-    await Student.createStudent(id, name, `ct-${collegeID}-${id}`, collegeID, password);
-    return await populateClearanceForStudentID(id);
+    var res = await Student.createStudent(
+      id,
+      name,
+      `ct-${collegeID}-${id}`,
+      collegeID,
+      password
+    );
+    await populateClearanceForStudentID(id);
+    return res;
   } else {
     return { message: "Failed. Student already registered" };
   }
@@ -32,34 +39,77 @@ const studentUpdateInformation = async () => {
 const studentApplyClearable = async (id, cid) => {
   try {
     let clrInfo = await Clearance.getClearanceInfoFromCID(cid);
-    console.log(clrInfo);
-    clrID = clrInfo["ClearanceID"];
-    let info = await Student.getStudentInfoFromClearanceID(clrID);
+    if (clrInfo["Status"] == "Pending" || clrInfo["Status"] == "Signed") {
+      return {
+        message: "Failed to apply. You have already applied.",
+        success: false,
+      };
+    } else {
+      console.log(clrInfo);
+      clrID = clrInfo["ClearanceID"];
+      let info = await Student.getStudentInfoFromClearanceID(clrID);
 
-    console.log(info);
-    let name = info["Name"];
-    let studentID = info["StudentID"];
-    let apprvrID = clrInfo["ApproverID"];
-    let status = clrInfo["Status"];
-    console.log(studentID);
-    console.log(id);
-    if (studentID != id) {
-      return { message: "Unauthorized" };
+      console.log(info);
+      let name = info["Name"];
+      let studentID = info["StudentID"];
+      let apprvrID = clrInfo["ApproverID"];
+      let status = clrInfo["Status"];
+      console.log(studentID);
+      console.log(id);
+      if (studentID != id) {
+        return { message: "Unauthorized" };
+      }
+      await Clearance.updateClearableStatus(cid, "Pending");
+
+      await ClearanceQueue.enqueueClearable(
+        cid,
+        apprvrID,
+        name,
+        studentID,
+        clrID,
+        "Pending"
+      );
+
+      await ClearanceLog.logClearable(
+        cid,
+        new Date().toISOString(),
+        "STUDENT_APPLIED"
+      );
     }
-    await Clearance.updateClearableStatus(cid, "Pending");
-
-    await ClearanceQueue.enqueueClearable(
-      cid,
-      apprvrID,
-      name,
-      studentID,
-      clrID,status
-    );
-
-    await ClearanceLog.logClearable(cid, new Date().toISOString());
-    return { message: "Successfully applied!", success: true };
   } catch (e) {
     return { message: "Failed to apply", error: e.message, success: false };
+  }
+};
+
+const studentCancelClearableApplication = async (cid) => {
+  try {
+    var status = (await Clearance.getClearanceInfoFromCID(cid))["Status"];
+    console.log(status);
+    if (status == "Pending") {
+      await Clearance.updateClearableStatusToNull(cid);
+      await ClearanceLog.logClearable(
+        cid,
+        new Date().toISOString(),
+        "STUDENT_CANCELLED"
+      );
+
+      await ClearanceQueue.deleteClearable(cid);
+      return { message: "Successfully cannceled application!", success: true };
+    } else
+      return {
+        message: "Clearable not pending anymore. Cancel failed.",
+        error: e,
+        success: false,
+      };
+    // delete from clearance queue
+    // add log to clearance log
+    // remarks on clearance log, cancelled by student
+  } catch (e) {
+    return {
+      message: "Failed to cancel application",
+      error: e,
+      success: false,
+    };
   }
 };
 
@@ -100,7 +150,11 @@ const approverSignClearanceWithRemarks = async (CID, remarks) => {
   try {
     await ClearanceQueue.updateClearableStatus(CID, "Signed");
     await ClearanceQueue.updateClearableRemarks(CID, remarks);
-    await ClearanceLog.logClearable(CID, new Date().toISOString());
+    await ClearanceLog.logClearable(
+      CID,
+      new Date().toISOString(),
+      "APPROVER_SIGN"
+    );
     await ClearanceQueue.deleteClearable(CID);
     await Clearance.updateClearableRemarks(CID, remarks);
     await Clearance.updateClearableStatus(CID, "Signed");
@@ -114,7 +168,11 @@ const approverSignClearanceWithRemarks = async (CID, remarks) => {
 const approverSignClearance = async (CID) => {
   try {
     await ClearanceQueue.updateClearableStatus(CID, "Signed");
-    await ClearanceLog.logClearable(CID, new Date().toISOString());
+    await ClearanceLog.logClearable(
+      CID,
+      new Date().toISOString(),
+      "APPROVER_SIGN"
+    );
     await ClearanceQueue.deleteClearable(CID);
     await Clearance.updateClearableStatus(CID, "Signed");
 
@@ -133,7 +191,11 @@ const approverRejectClearance = async (CID, remarks) => {
   try {
     await ClearanceQueue.updateClearableStatus(CID, "Rejected");
     await ClearanceQueue.updateClearableRemarks(CID, remarks);
-    await ClearanceLog.logClearable(CID, new Date().toISOString());
+    await ClearanceLog.logClearable(
+      CID,
+      new Date().toISOString(),
+      "APPROVER_REJECT"
+    );
     await ClearanceQueue.deleteClearable(CID);
     await Clearance.updateClearableRemarks(CID, remarks);
     await Clearance.updateClearableStatus(CID, "Rejected");
@@ -154,7 +216,13 @@ const approverRestoreClearable = async (id) => {
     await ClearanceLog.restoreClearable(id);
     var res = await ClearanceLog.getNoteStatusRemarksBasedOnID(id);
     console.log(res);
+
     await Clearance.updateClearable(res["CID"], res["Status"], res["Remarks"]);
+    await ClearanceLog.logClearable(
+      res["CID"],
+      new Date().toISOString(),
+      "APPROVER_RESTORE"
+    );
 
     return { message: "Success", success: true };
   } catch (e) {
@@ -217,4 +285,5 @@ module.exports = {
   fetchClearanceTypeBasedOnCollegeID,
   populateClearanceForStudentID,
   approverRestoreClearable,
+  studentCancelClearableApplication,
 };

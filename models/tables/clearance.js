@@ -1,7 +1,7 @@
 const { db } = require("../../db");
 
 function getClearance(id) {
-  const query = "SELECT * from Clearance WHERE ClearanceID = ?";
+  const query = "SELECT * from Clearance WHERE ClearanceID = ? ORDER BY Flow";
   return new Promise(function (resolve, reject) {
     db.all(query, [id], (err, rows) => {
       if (err) resolve({ message: "Failed", error: err, success: false });
@@ -99,6 +99,17 @@ function updateClearableStatus(cid, status) {
     });
   });
 }
+
+function updateClearableStatusToNull(cid) {
+  /** Must give the whole Clearance row in exact  */
+  const query = `UPDATE Clearance SET Status = NULL WHERE CID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [cid], (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully updated status" });
+    });
+  });
+}
 function updateClearable(cid, status, remarks) {
   /** Must give the whole Clearance row in exact  */
   const query = `UPDATE Clearance SET Status = ?, Remarks = ? WHERE CID = ?`;
@@ -141,5 +152,6 @@ module.exports = {
   createClearance,
   // updateClearance,
   deleteClearance,
+  updateClearableStatusToNull,
   updateClearable,
 };

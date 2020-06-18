@@ -183,7 +183,14 @@ The student manually applies a clearable to it's assigned approver. The student 
 Again, interface simplifies this process, and may only involve clicking an apply button on a specific clearable.
 
 ### Cancelling an Application
-TBI
+Reverts the application of a clearable.
+* Parameters 
+    * CID   
+* Response 
+    * Generic success response
+    
+Again, interface simplifies this process, and may only involve clicking an apply button on a specific clearable.
+
 
 
 ## Approver
@@ -204,7 +211,7 @@ Clearables for an approver are enqueued in the ClearanceQueue.
 ### Rejecting a Clearable
 `approverRejectClearance()`
 ### Restoring a Clearable
-Presented with ClearanceLog. In case of mistake, approver can restore a clearable. 
+Presented with ClearanceLog. In case of mistake, approver can restore a clearable. Given the ClearanceLog, approver looks for the state of the Clearable where he wants to restore, that state will then be restored.
 `approverRestoreClearable(id)`
 * Parameters
     * id
@@ -218,10 +225,12 @@ TBI
 ### Remove Clearance Flow
 TBI
 ### Add Approver
+
 TBI
 ### Remove Approver
 TBI
-
+### Add Clearance Type
+TBI
 ## Generic Success Responses
 ### Success 
 

@@ -4,7 +4,7 @@ function getStudent(id) {
   const query = "SELECT * from Student WHERE StudentID = ?";
   return new Promise(function (resolve, reject) {
     db.get(query, [id], (err, rows) => {
-      if (err) resolve({message:"Failed", error: err, success:false});
+      if (err) resolve({ message: "Failed", error: err, success: false });
       else resolve(rows);
     });
   });
@@ -15,7 +15,7 @@ function getStudentPublicInfo(id) {
     "SELECT StudentID, Name, ClearanceID, Status, CollegeID  from Student WHERE StudentID = ?";
   return new Promise(function (resolve, reject) {
     db.get(query, [id], (err, rows) => {
-      if (err) resolve({message:"Failed", error: err, success:false});
+      if (err) resolve({ message: "Failed", error: err, success: false });
       else resolve(rows);
     });
   });
@@ -25,7 +25,7 @@ function getStudentInfoFromClearanceID(clearanceID) {
     "SELECT StudentID, Name, CollegeID  from Student WHERE ClearanceID = ?";
   return new Promise(function (resolve, reject) {
     db.get(query, [clearanceID], (err, rows) => {
-      if (err) resolve({message:"Failed", error: err, success:false});
+      if (err) resolve({ message: "Failed", error: err, success: false });
       else resolve(rows);
     });
   });
@@ -35,7 +35,7 @@ function getStudentCollegeID(id) {
   const query = "SELECT CollegeID from Student WHERE StudentID = ?";
   return new Promise(function (resolve, reject) {
     db.get(query, [id], (err, rows) => {
-      if (err) resolve({message:"Failed", error: err, success:false});
+      if (err) resolve({ message: "Failed", error: err, success: false });
       else resolve(rows);
     });
   });
@@ -44,32 +44,29 @@ function getStudentClearanceID(id) {
   const query = "SELECT ClearanceID from Student WHERE StudentID = ?";
   return new Promise(function (resolve, reject) {
     db.get(query, [id], (err, rows) => {
-      if (err) resolve({message:"Failed", error: err, success:false});
+      if (err) resolve({ message: "Failed", error: err, success: false });
       else resolve(rows);
     });
   });
 }
 function getAllStudents() {
-  const query = "SELECT StudentID, Name, ClearanceID, Status, CollegeID from Student";
+  const query =
+    "SELECT StudentID, Name, ClearanceID, Status, CollegeID from Student";
   return new Promise(function (resolve, reject) {
     db.all(query, [], (err, rows) => {
-      if (err) resolve({message:"Failed", error: err, success:false});
+      if (err) resolve({ message: "Failed", error: err, success: false });
       else resolve(rows);
     });
   });
 }
 
 function createStudent(id, name, clearanceID, collegeID, password) {
-  const query = `INSERT INTO Student Values(?,?,?,?,?,?)`;
+  const query = `INSERT INTO Student(StudentID, Name, ClearanceID,CollegeID,Password) Values(?,?,?,?,?)`;
   return new Promise(function (resolve, reject) {
-    db.all(
-      query,
-      [id, name, clearanceID, "notapplied", collegeID, password],
-      (err, rows) => {
-        if (err) resolve({message:"Failed", error: err, success:false});
-        else resolve({ message: "Successfully created", success: true });
-      }
-    );
+    db.all(query, [id, name, clearanceID, collegeID, password], (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully created", success: true });
+    });
   });
 }
 
@@ -77,8 +74,8 @@ function updatePassword(id, passwd) {
   const query = `UPDATE Student SET Password = ?  WHERE StudentID = ?`;
   return new Promise(function (resolve, reject) {
     db.all(query, [passwd, id], (err, rows) => {
-      if (err) resolve({message:"Failed", error: err, success:false});
-      else resolve({ message: "Successfully updated" , success:true});
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully updated", success: true });
     });
   });
 }
@@ -88,8 +85,8 @@ function updateStudent(params) {
   const query = `UPDATE Student SET Name = ?, ClearanceID = ?, Status = ?, CollegeID = ?, Password = ?  WHERE StudentID = ?`;
   return new Promise(function (resolve, reject) {
     db.all(query, params, (err, rows) => {
-      if (err) resolve({message:"Failed", error: err, success:false});
-      else resolve({ message: "Successfully updated" , success:true});
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully updated", success: true });
     });
   });
 }
@@ -97,8 +94,8 @@ function deleteStudent(id) {
   const query = "DELETE from Student WHERE StudentID = ?";
   return new Promise(function (resolve, reject) {
     db.run(query, [id], (err, rows) => {
-      if (err) resolve({message:"Failed", error: err, success:false});
-      else resolve({ message: "Successfully deleted" , success:true});
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully deleted", success: true });
     });
   });
 }
