@@ -183,7 +183,14 @@ The student manually applies a clearable to it's assigned approver. The student 
 Again, interface simplifies this process, and may only involve clicking an apply button on a specific clearable.
 
 ### Cancelling an Application
-TBI
+Reverts the application of a clearable.
+* Parameters 
+    * CID   
+* Response 
+    * Generic success response
+    
+Again, interface simplifies this process, and may only involve clicking an apply button on a specific clearable.
+
 
 
 ## Approver
@@ -218,10 +225,12 @@ TBI
 ### Remove Clearance Flow
 TBI
 ### Add Approver
+
 TBI
 ### Remove Approver
 TBI
-
+### Add Clearance Type
+TBI
 ## Generic Success Responses
 ### Success 
 
