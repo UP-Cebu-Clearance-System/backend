@@ -44,7 +44,7 @@ test.get("/create", async (req, res) => {
 test.get("/reg", async (req, res) => {
   result = await ClearanceDatabase.studentRegister(
     "2018-3000",
-    "Joe Doe", 
+    "Joe Doe",
     "cosci",
     "test password"
   );
@@ -53,24 +53,33 @@ test.get("/reg", async (req, res) => {
 });
 
 test.get("/app", async (req, res) => {
-  result = await ClearanceDatabase.studentApplyClearable("2018-2999", 1);
+  result = await ClearanceDatabase.studentApplyClearable("2018-3000", 109);
+  console.log(result);
+  res.send(result);
+});
+test.get("/can", async (req, res) => {
+  result = await ClearanceDatabase.studentCancelClearableApplication(109);
   console.log(result);
   res.send(result);
 });
 test.get("/log", async (req, res) => {
-  result = await ClearanceLog.logClearable(15, new Date().toISOString(), "APPROVER_REJECT");
+  result = await ClearanceLog.logClearable(
+    15,
+    new Date().toISOString(),
+    "APPROVER_REJECT"
+  );
   console.log(result);
   res.send(result);
 });
 
 test.get("/rej", async (req, res) => {
-  result = await ClearanceDatabase.approverRejectClearance(15, "bad ka");
+  result = await ClearanceDatabase.approverRejectClearance(109, "bad ka");
   console.log(result);
   res.send(result);
 });
 
 test.get("/res", async (req, res) => {
-  result = await ClearanceDatabase.approverRestoreClearable(5);
+  result = await ClearanceDatabase.approverRestoreClearable(47);
   console.log(result);
   res.send(result);
 });

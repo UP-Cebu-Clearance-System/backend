@@ -204,7 +204,7 @@ Clearables for an approver are enqueued in the ClearanceQueue.
 ### Rejecting a Clearable
 `approverRejectClearance()`
 ### Restoring a Clearable
-Presented with ClearanceLog. In case of mistake, approver can restore a clearable. 
+Presented with ClearanceLog. In case of mistake, approver can restore a clearable. Given the ClearanceLog, approver looks for the state of the Clearable where he wants to restore, that state will then be restored.
 `approverRestoreClearable(id)`
 * Parameters
     * id
