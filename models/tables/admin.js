@@ -25,7 +25,7 @@ function createAdmin(username, password) {
   return new Promise(function (resolve, reject) {
     db.all(query, [username, password], (err, rows) => {
       if (err) resolve({message:"Failed", error: err, success:false});
-      else resolve({ message: "Successfully created" });
+      else resolve({ message: "Successfully created", success:true });
     });
   });
 }
