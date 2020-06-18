@@ -4,7 +4,7 @@ const { studentRegister } = require('../models/ClearanceDatabase')
 const { createApprover } = require('../models/tables/approver')
 
 signup.post('/student', hashPassword, async(req, res) => {
-    const result = await studentRegister(req.body.id, req.body.name, `ct-${req.body.collegeID}-${req.body.id}`, req.body.collegeID, req.body.password)
+    const result = await studentRegister(req.body.id, req.body.name, req.body.collegeID, req.body.password)
     res.send(result)
 })
 
