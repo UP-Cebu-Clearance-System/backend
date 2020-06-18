@@ -58,7 +58,7 @@ test.get("/app", async (req, res) => {
   res.send(result);
 });
 test.get("/log", async (req, res) => {
-  result = await ClearanceLog.logClearable(15, new Date().toISOString());
+  result = await ClearanceLog.logClearable(15, new Date().toISOString(), "APPROVER_REJECT");
   console.log(result);
   res.send(result);
 });

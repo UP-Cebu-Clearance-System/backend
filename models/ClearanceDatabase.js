@@ -63,7 +63,7 @@ const studentApplyClearable = async (id, cid) => {
       status
     );
 
-    await ClearanceLog.logClearable(cid, new Date().toISOString());
+    await ClearanceLog.logClearable(cid, new Date().toISOString(), "STUDENT_APPLIED");
     return { message: "Successfully applied!", success: true };
   } catch (e) {
     return { message: "Failed to apply", error: e.message, success: false };
@@ -115,7 +115,7 @@ const approverSignClearanceWithRemarks = async (CID, remarks) => {
   try {
     await ClearanceQueue.updateClearableStatus(CID, "Signed");
     await ClearanceQueue.updateClearableRemarks(CID, remarks);
-    await ClearanceLog.logClearable(CID, new Date().toISOString());
+    await ClearanceLog.logClearable(CID, new Date().toISOString(), "APPROVER_SIGN");
     await ClearanceQueue.deleteClearable(CID);
     await Clearance.updateClearableRemarks(CID, remarks);
     await Clearance.updateClearableStatus(CID, "Signed");
@@ -129,7 +129,7 @@ const approverSignClearanceWithRemarks = async (CID, remarks) => {
 const approverSignClearance = async (CID) => {
   try {
     await ClearanceQueue.updateClearableStatus(CID, "Signed");
-    await ClearanceLog.logClearable(CID, new Date().toISOString());
+    await ClearanceLog.logClearable(CID, new Date().toISOString(),"APPROVER_SIGN");
     await ClearanceQueue.deleteClearable(CID);
     await Clearance.updateClearableStatus(CID, "Signed");
 
@@ -148,7 +148,7 @@ const approverRejectClearance = async (CID, remarks) => {
   try {
     await ClearanceQueue.updateClearableStatus(CID, "Rejected");
     await ClearanceQueue.updateClearableRemarks(CID, remarks);
-    await ClearanceLog.logClearable(CID, new Date().toISOString());
+    await ClearanceLog.logClearable(CID, new Date().toISOString(),"APPROVER_REJECT");
     await ClearanceQueue.deleteClearable(CID);
     await Clearance.updateClearableRemarks(CID, remarks);
     await Clearance.updateClearableStatus(CID, "Rejected");
