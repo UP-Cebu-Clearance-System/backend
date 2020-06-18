@@ -1,7 +1,7 @@
 const { db } = require("../../db");
 
 function getClearance(id) {
-  const query = "SELECT * from Clearance WHERE ClearanceID = ?";
+  const query = "SELECT * from Clearance WHERE ClearanceID = ? ORDER BY Flow";
   return new Promise(function (resolve, reject) {
     db.all(query, [id], (err, rows) => {
       if (err) resolve({ message: "Failed", error: err, success: false });
