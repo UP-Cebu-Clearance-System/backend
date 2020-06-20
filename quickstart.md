@@ -227,12 +227,22 @@ An approver might want to check the clearance of student to check some requisite
     * array of student clearables
 ## Admin
 TO BE IMPLEMENTED
+### Add Approver
+
+`adminAddApprover(name, title, officeID, passwd)`
+
+* Parameters
+    * name
+        * Surname, Given name Middle name
+    * title
+        *  
+
+    * officeID
+        * refer to Office in Constants.
+    * passwd
 ### Add Clearance Flow
 TBI
 ### Remove Clearance Flow
-TBI
-### Add Approver
-
 TBI
 ### Remove Approver
 TBI
