@@ -23,7 +23,18 @@ function deleteApproverTitle(id) {
     });
   });
 }
+
+function getAllApproverTitles() {
+  const query = "SELECT TitleID, Name from ApproverTitles";
+  return new Promise(function (resolve, reject) {
+    db.all(query, [], (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve(rows);
+    });
+  });
+}
 module.exports = {
   addApproverTitle,
   deleteApproverTitle,
+  getAllApproverTitles,
 };
