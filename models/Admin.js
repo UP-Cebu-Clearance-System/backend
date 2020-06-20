@@ -11,9 +11,10 @@ const adminAddApprover = async (name, title, officeID, passwd) => {
 };
 
 const adminApproverUpdatePassword = async (id, passwd) => {
-    return Approver.updatePassword(id, passwd);
+  return Approver.updatePassword(id, passwd);
 };
 
+const adminAddApproverTitle = async (name) => {};
 const adminRemoveApprover = async (id) => {};
 const adminAddClearanceFlow = async (id, passwd) => {};
 
@@ -21,6 +22,7 @@ module.exports = {
   adminRegister,
   adminAddApprover,
   adminRemoveApprover,
+  adminAddApproverTitle,
   adminAddClearanceFlow,
   adminApproverUpdatePassword,
 };

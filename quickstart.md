@@ -235,11 +235,20 @@ TO BE IMPLEMENTED
     * name
         * Surname, Given name Middle name
     * title
-        *  
+        *  refer to 
 
     * officeID
         * refer to Office in Constants.
-    * passwd
+    * passwd 
+
+User interfaces will offer a selection from titles found in ApproverTitles table.
+
+
+
+### Add Approver Title
+* Parameters
+    * Name 
+        * Words are separated by space, First letter capitalized, Acronyms e.g. OSA, PE, TLRC must be all capitalized
 ### Add Clearance Flow
 TBI
 ### Remove Clearance Flow
