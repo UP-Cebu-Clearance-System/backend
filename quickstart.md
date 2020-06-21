@@ -217,7 +217,14 @@ Presented with ClearanceLog. In case of mistake, approver can restore a clearabl
     * id
         * id of 
 * Response
+### Getting Clearance of Student
+An approver might want to check the clearance of student to check some requisite signatories
+`approverGetClearanceOfStudent(studentID)`
 
+* Parameters
+    * StudentID
+* Response
+    * array of student clearables
 ## Admin
 TO BE IMPLEMENTED
 ### Add Clearance Flow

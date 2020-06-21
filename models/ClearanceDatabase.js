@@ -165,6 +165,10 @@ const approverSignClearanceWithRemarks = async (CID, remarks) => {
   }
 };
 
+const approverGetClearanceOfStudent = async (studentID) => {
+  return Clearance.getClearance(studentID);
+};
+
 const approverSignClearance = async (CID) => {
   try {
     await ClearanceQueue.updateClearableStatus(CID, "Signed");
@@ -285,5 +289,9 @@ module.exports = {
   fetchClearanceTypeBasedOnCollegeID,
   populateClearanceForStudentID,
   approverRestoreClearable,
+<<<<<<< HEAD
+  studentCancelClearableApplication,approverGetClearanceOfStudent
+=======
   studentCancelClearableApplication,
+>>>>>>> master
 };
