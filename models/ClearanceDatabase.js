@@ -289,5 +289,9 @@ module.exports = {
   fetchClearanceTypeBasedOnCollegeID,
   populateClearanceForStudentID,
   approverRestoreClearable,
+<<<<<<< HEAD
   studentCancelClearableApplication,approverGetClearanceOfStudent
+=======
+  studentCancelClearableApplication,
+>>>>>>> master
 };
