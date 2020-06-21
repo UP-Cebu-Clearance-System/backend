@@ -124,3 +124,10 @@ or at https://clearance.herokuapp.com
             ...
         ]
         ```
+## How to realtime?
+- Add socketio script
+    ```html
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    ```
+- Event listeners
+    - WIP
