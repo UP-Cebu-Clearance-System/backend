@@ -265,19 +265,55 @@ TO BE IMPLEMENTED
   - passwd
     - secure password
 
-User interfaces will offer a selection from titles found in ApproverTitles table.
+User interfaces will offer a selection from titles found in ApproverTitles table. Before addiing an approver, one must add the title for it first.
 
 ### Remove Approver
 
 `adminRemoveApprover(approverID)`
 
 - Parameters
-  - approverID - approver id of approver
-    deletes approver with approverID
 
-### Update Approver
+  - approverID
+    - approver id of approver
 
-TBI
+  deletes approver with approverID
+
+### Update Approver Title
+
+`adminAddApproverTitle(approverID, title)`
+
+- Parameters
+
+  - approverID
+
+    - approver id of approver
+
+  - title
+    - refer to ApproverTitles table
+
+### Update Approver Name
+
+`adminAddApproverName(approverID, name)`
+
+- Parameters
+
+  - approverID
+
+    - approver id of approver
+
+  - name
+
+### Update Approver OfficeID
+
+`adminAddApproverOfficeID(approverID, officeID)`
+
+- Parameters
+
+  - approverID
+
+    - approver id of approver
+
+  - officeID - refer to Office table
 
 ### Add Approver Title
 
@@ -296,8 +332,6 @@ TBI
     - select an id of approver from ApproverTitles you want to delete, use that id
 
 Removes the approver title from approver titles
-
-
 
 ### Add Clearable to Clearance Flow
 
@@ -318,7 +352,9 @@ Adding a whole clearance flow will be the process of adding every single clearab
     - primary key of row from ClearanceFlow table, view ClearanceFlow table first.
 
 ### Update Clearable Approver from Clearance Flow
+
 `adminUpdateClearableApproverFromClearanceFlow(clearanceFlowID, approverID)`
+
 - Parameters
   - clearanceFlowID
   - new ApproverID
@@ -328,6 +364,7 @@ Update the approver id of clearable
 ### Update Clearable Flow from Clearance Flow
 
 `adminUpdateClearableFlowFromClearanceFlow(clearanceFlowID, flow)`
+
 - Parameters
   - clearanceFlowID
   - new Flow

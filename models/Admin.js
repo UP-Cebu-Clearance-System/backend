@@ -15,7 +15,15 @@ const adminAddApprover = async (name, title, officeID, passwd) => {
 const adminApproverUpdatePassword = async (id, passwd) => {
   return Approver.updatePassword(id, passwd);
 };
-
+const adminApproverUpdateTitle = async (id, title) => {
+  return Approver.updateApproverTitle(id, title);
+};
+const adminApproverUpdateName = async (id, name) => {
+  return Approver.updateApproverName(id, name);
+};
+const adminApproverUpdateOfficeID = async (id, officeID) => {
+  return Approver.updatePassword(id, officeID);
+};
 const adminAddApproverTitle = async (name) => {
   return ApproverTitles.addApproverTitle(name);
 };
@@ -82,9 +90,11 @@ module.exports = {
   adminRemoveApprover,
   adminAddApproverTitle,
   adminAddClearanceFlow,
+  adminApproverUpdateName,
+  adminApproverUpdateTitle,
   adminRemoveApproverTitle,
+  adminApproverUpdateOfficeID,
   adminApproverUpdatePassword,
-
   adminAddClearableToClearanceFlow,
   adminRemoveClearableFromClearanceFlow,
   adminFetchClearanceFlowOfClearanceTypeID,
