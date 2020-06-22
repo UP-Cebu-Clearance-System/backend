@@ -43,6 +43,10 @@ const adminAddClearableToClearanceFlow = async (
   );
 };
 
+const adminRemoveClearableFromClearanceFlow = async (clearanceFlowID) => {
+  return ClearanceFlow.deleteClearableFromClearanceFlowID(clearanceFlowID);
+};
+
 const adminManualQuery = async (query) => {
   return new Promise(function (resolve, reject) {
     db.all(query, [], (err, rows) => {
@@ -62,5 +66,6 @@ module.exports = {
   adminRemoveApproverTitle,
   adminApproverUpdatePassword,
   adminAddClearableToClearanceFlow,
+  adminRemoveClearableFromClearanceFlow,
   adminFetchClearanceFlowOfClearanceTypeID,
 };

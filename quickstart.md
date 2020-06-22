@@ -278,6 +278,8 @@ User interfaces will offer a selection from titles found in ApproverTitles table
 - Parameters
   - id
 
+Removes the approver title from approver titles
+
 ### Add Clearance Flow
 
 TBI

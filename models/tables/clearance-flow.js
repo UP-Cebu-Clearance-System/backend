@@ -63,7 +63,7 @@ function updateClearanceFlow(params) {
     });
   });
 }
-function deleteClearanceFlow(id) {
+function deleteClearableFromClearanceFlowID(id) {
   const query = "DELETE from ClearanceFlow WHERE ClearanceFlowID = ?";
   return new Promise(function (resolve, reject) {
     db.run(query, [id], (err, rows) => {
@@ -78,7 +78,7 @@ module.exports = {
   getAllClearanceFlows,
   createClearanceFlow,
   updateClearanceFlow,
-  deleteClearanceFlow,
+  deleteClearableFromClearanceFlowID,
   getClearanceFlowFromClearanceTypeID,
   addClearableToClearanceFlow,
 };
