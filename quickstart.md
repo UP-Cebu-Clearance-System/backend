@@ -265,9 +265,59 @@ TO BE IMPLEMENTED
   - passwd
     - secure password
 
-User interfaces will offer a selection from titles found in ApproverTitles table.
+User interfaces will offer a selection from titles found in ApproverTitles table. Before addiing an approver, one must add the title for it first.
+
+### Remove Approver
+
+`adminRemoveApprover(approverID)`
+
+- Parameters
+
+  - approverID
+    - approver id of approver
+
+  deletes approver with approverID
+
+### Update Approver Title
+
+`adminAddApproverTitle(approverID, title)`
+
+- Parameters
+
+  - approverID
+
+    - approver id of approver
+
+  - title
+    - refer to ApproverTitles table
+
+### Update Approver Name
+
+`adminAddApproverName(approverID, name)`
+
+- Parameters
+
+  - approverID
+
+    - approver id of approver
+
+  - name
+
+### Update Approver OfficeID
+
+`adminAddApproverOfficeID(approverID, officeID)`
+
+- Parameters
+
+  - approverID
+
+    - approver id of approver
+
+  - officeID - refer to Office table
 
 ### Add Approver Title
+
+`adminAddApproverTitle(titleName)`
 
 - Parameters
   - Name
@@ -275,24 +325,63 @@ User interfaces will offer a selection from titles found in ApproverTitles table
 
 ### Remove Approver Title
 
+`adminRemoveApproverTitle(id)`
+
 - Parameters
   - id
+    - select an id of approver from ApproverTitles you want to delete, use that id
 
-### Add Clearance Flow
+Removes the approver title from approver titles
 
-TBI
+### Add Clearable to Clearance Flow
 
-### Remove Clearance Flow
+`adminAddClearableToClearanceFlow(clearanceTypeID, approverID, flow)`
 
-TBI
+- Parameters
+  - clearanceTypeID
+    - clearanceType id of clearable refer to ClearanceType table
 
-### Remove Approver
+Adding a whole clearance flow will be the process of adding every single clearable one by one
 
-TBI
+### Remove Clearable from Clearance Flow
+
+`adminRemoveClearableFromClearanceFlow(clearanceFlowID)`
+
+- Parameters
+  - clearanceFlowID
+    - primary key of row from ClearanceFlow table, view ClearanceFlow table first.
+
+### Update Clearable Approver from Clearance Flow
+
+`adminUpdateClearableApproverFromClearanceFlow(clearanceFlowID, approverID)`
+
+- Parameters
+  - clearanceFlowID
+  - new ApproverID
+
+Update the approver id of clearable
+
+### Update Clearable Flow from Clearance Flow
+
+`adminUpdateClearableFlowFromClearanceFlow(clearanceFlowID, flow)`
+
+- Parameters
+  - clearanceFlowID
+  - new Flow
+
+Update the flow of clearable
 
 ### Add Clearance Type
 
 TBI
+
+### Manual Query
+
+`adminManualQuery(query)`
+
+- Parameters
+  - query - the whole query string
+    Manual query in case of emergency
 
 ## Generic Success Responses
 
