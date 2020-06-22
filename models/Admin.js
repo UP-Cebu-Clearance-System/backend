@@ -47,6 +47,25 @@ const adminRemoveClearableFromClearanceFlow = async (clearanceFlowID) => {
   return ClearanceFlow.deleteClearableFromClearanceFlowID(clearanceFlowID);
 };
 
+const adminUpdateClearableApproverFromClearanceFlow = async (
+  clearanceFlowID,
+  approverID
+) => {
+  return ClearanceFlow.updateApproverIDOfClearableToClearanceFlow(
+    clearanceFlowID,
+    approverID
+  );
+};
+const adminUpdateClearableFlowFromClearanceFlow = async (
+  clearanceFlowID,
+  flow
+) => {
+  return ClearanceFlow.updateFlowOfClearableToClearanceFlow(
+    clearanceFlowID,
+    flow
+  );
+};
+
 const adminManualQuery = async (query) => {
   return new Promise(function (resolve, reject) {
     db.all(query, [], (err, rows) => {
@@ -65,7 +84,10 @@ module.exports = {
   adminAddClearanceFlow,
   adminRemoveApproverTitle,
   adminApproverUpdatePassword,
+
   adminAddClearableToClearanceFlow,
   adminRemoveClearableFromClearanceFlow,
   adminFetchClearanceFlowOfClearanceTypeID,
+  adminUpdateClearableFlowFromClearanceFlow,
+  adminUpdateClearableApproverFromClearanceFlow,
 };

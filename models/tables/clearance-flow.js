@@ -13,7 +13,7 @@ function getClearanceFlow(id) {
 function getClearanceFlowFromClearanceTypeID(clearanceTypeID) {
   const query = "SELECT * from ClearanceFlow WHERE ClearanceTypeID = ?";
   return new Promise(function (resolve, reject) {
-    db.get(query, [id], (err, rows) => {
+    db.get(query, [clearanceTypeID], (err, rows) => {
       if (err) resolve({ message: "Failed", error: err, success: false });
       else resolve(rows);
     });
@@ -32,7 +32,27 @@ function addClearableToClearanceFlow(clearanceTypeID, approverID, flow) {
     );
   });
 }
-
+function updateApproverIDOfClearableToClearanceFlow(
+  clearanceFlowID,
+  approverID
+) {
+  const query = `UPDATE ClearanceFlow SET ApproverID = ?  WHERE ClearanceFlowID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [approverID, clearanceFlowID], (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully updated approverID" });
+    });
+  });
+}
+function updateFlowOfClearableToClearanceFlow(clearanceFlowID, flow) {
+  const query = `UPDATE ClearanceFlow SET Flow = ?  WHERE ClearanceFlowID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [flow, clearanceFlowID], (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully updated flow" });
+    });
+  });
+}
 function getAllClearanceFlows() {
   const query = "SELECT * from ClearanceFlow";
   return new Promise(function (resolve, reject) {
@@ -78,7 +98,9 @@ module.exports = {
   getAllClearanceFlows,
   createClearanceFlow,
   updateClearanceFlow,
+  addClearableToClearanceFlow,
   deleteClearableFromClearanceFlowID,
   getClearanceFlowFromClearanceTypeID,
-  addClearableToClearanceFlow,
+  updateFlowOfClearableToClearanceFlow,
+  updateApproverIDOfClearableToClearanceFlow,
 };
