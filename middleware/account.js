@@ -1,5 +1,6 @@
 const { getStudent } = require('../models/tables/student')
 const { getApprover } = require('../models/tables/approver')
+const { getAdmin } = require('../models/tables/admin')
 
 const studentInfo = async(req, res, next) => {
     const id = req.body.id
@@ -23,4 +24,15 @@ const approverInfo = async(req, res, next) => {
     }
 }
 
-module.exports = { approverInfo, studentInfo }
+const adminInfo = async(req, res, next) => {
+    const username = req.body.username
+    const info = await getAdmin(username)
+    if(info){
+        req.body.dbpassword = info.Password
+        next()
+    }else{
+        res.status(400).send({ message: `Admin not found.` })
+    }
+}
+
+module.exports = { adminInfo, approverInfo, studentInfo }
