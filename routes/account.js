@@ -1,10 +1,14 @@
 const account = require('express').Router()
-const { verifyToken } = require('../middleware/jwt')
 const { hashPassword, verifyPassword } = require('../middleware/password')
 const { approverInfo, studentInfo } = require('../middleware/account')
-const { approverUpdatePassword, studentUpdatePassword } = require('../models/ClearanceDatabase')
+const { approverUpdatePassword, fetchApproverInfo, fetchStudentInfo, studentUpdatePassword } = require('../models/ClearanceDatabase')
 
-account.post('/password', verifyToken, approverInfo, studentInfo, verifyPassword, 
+account.get('/info', async(req, res) => {
+    const info = req.body.role === 'student' ? await fetchStudentInfo(req.body.id) : await fetchApproverInfo(req.body.id)
+    res.status(200).send(info)
+})
+
+account.post('/password', approverInfo, studentInfo, verifyPassword, 
     (req, res, next) => {
         req.body.password = req.body.newPassword
         delete req.body.newPassword
