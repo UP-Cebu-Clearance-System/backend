@@ -3,24 +3,30 @@ const { getApprover } = require('../models/tables/approver')
 const { getAdmin } = require('../models/tables/admin')
 
 const studentInfo = async(req, res, next) => {
-    const id = req.body.id
-    const info = await getStudent(id)
-    if(info){
-        req.body.dbpassword = info.Password
-        next()
-    } else {
-        res.status(404).send({ message: `Student not found.` })
+    if(req.body.role !== 'student' && req.body.role !== undefined) next()
+    else {
+        const id = req.body.id
+        const info = await getStudent(id)
+        if(info){
+            req.body.dbpassword = info.Password
+            next()
+        } else {
+            res.status(404).send({ message: `Student not found.` })
+        }
     }
 }
 
 const approverInfo = async(req, res, next) => {
-    const id = req.body.id
-    const info = await getApprover(id)
-    if(info){
-        req.body.dbpassword = info.Password
-        next()
-    } else {
-        res.status(404).send({ message: `Approver not found.` })
+    if(req.body.role !== 'approver' && req.body.role !== undefined) next()
+    else {
+        const id = req.body.id
+        const info = await getApprover(id)
+        if(info){
+            req.body.dbpassword = info.Password
+            next()
+        } else {
+            res.status(404).send({ message: `Approver not found.` })
+        }
     }
 }
 

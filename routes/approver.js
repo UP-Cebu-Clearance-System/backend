@@ -1,14 +1,13 @@
 const approver = require('express').Router()
-const { verifyToken } = require('../middleware/jwt')
 const { approverFetchClearanceQueue,  approverSignClearance, approverSignClearanceWithRemarks, approverRejectClearance, approverRestoreClearable } = require('../models/ClearanceDatabase')
 const { getClearanceInfoFromCID } = require('../models/tables/clearance')
 
-approver.get('/', verifyToken, async(req, res) => {
+approver.get('/', async(req, res) => {
     const queue = await approverFetchClearanceQueue(req.body.id)
     res.status(200).send(queue)
 })
 
-approver.post('/sign', verifyToken, async(req, res) => {
+approver.post('/sign', async(req, res) => {
     const id = req.body.id
     const cid = req.body.CID
     const fbi = (await getClearanceInfoFromCID(cid)).ApproverID
@@ -20,7 +19,7 @@ approver.post('/sign', verifyToken, async(req, res) => {
     }
 })
 
-approver.post('/reject', verifyToken, async(req, res) => {
+approver.post('/reject', async(req, res) => {
     const id = req.body.id
     const cid = req.body.CID
     const fbi = (await getClearanceInfoFromCID(cid)).ApproverID
@@ -32,7 +31,7 @@ approver.post('/reject', verifyToken, async(req, res) => {
     }
 })
 
-// approver.post('/restore', verifyToken, async(req, res) => {
+// approver.post('/restore', async(req, res) => {
 //     const id = req.body.id
 //     const cid = req.body.CID
 //     const fbi = (await getClearanceInfoFromCID(cid)).ApproverID

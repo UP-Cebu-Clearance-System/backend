@@ -12,10 +12,11 @@ npm start
 # or
 npm run dev # run as a development server
 ```
-default local link: http://localhost:3000/
-or at https://clearance.herokuapp.com
+default local link: http://localhost:3000/ or
+production link: https://clearance.herokuapp.com
 
 ## Endpoints
+#### SIGNUP
 - POST  /signup/student
     - request body: 
         ```js
@@ -38,10 +39,6 @@ or at https://clearance.herokuapp.com
         ```js
         {
             "id": "abcd-efgh", // aprrover id: string
-            "name": "Jane Doe", // name: string
-            "employeeID": "0000-00000", // id: string
-            "title": "Cashier", // job title: string
-            "officeID": "cosci", // offfice id: string
             "password": "password" // password: string 
         }
         ```
@@ -52,6 +49,7 @@ or at https://clearance.herokuapp.com
             "success": true // success: boolean
         }
         ```
+#### LOGIN
 - POST /login/student
     - request body:
         ```js
@@ -80,7 +78,8 @@ or at https://clearance.herokuapp.com
             "accessToken": "Token"
         }
         ```
-- GET /clearance
+#### CLEARANCE
+- GET /clearance (*list of clearance items)
     - Headers
         ```js
         {
@@ -144,7 +143,8 @@ or at https://clearance.herokuapp.com
             success: true // boolean
         }
         ```
-- GET /approver
+#### APPROVER
+- GET /approver (*list of students to be approved)
     - Headers
         ```js
         {
@@ -209,6 +209,59 @@ or at https://clearance.herokuapp.com
             success: true // boolean
         }
         ```
+#### ACCOUNT
+- GET /account/info (* public info of account holder)
+    - Headers
+        ```js
+        {
+            "Authorization": "Bearer <token>"
+        }
+        ```
+    - response:
+        ```js
+        // if student
+        {
+            "StudentID": "0000-11111",
+            "Name": "Juan Dela Cruz",
+            "ClearanceID": "ct-cosci-0000-11111",
+            "Status": null,
+            "CollegeID": "cosci"
+        }
+        // if approver
+        {
+            "ApproverID": "ocosci-laboratory",
+            "Name": "Joe Mama",
+            "Title": "Laboratory"
+        }
+        ```
+- POST /account/password (*change current password)
+    - Headers
+        ```js
+        {
+            "Authorization": "Bearer <token>"
+        }
+        ```
+    - request body:
+        ```js
+        {
+            "password": "password" // string: current password of the account
+            "newPassword": "newPassword" // string
+        }
+        ```
+    - response:
+        ```js
+        {
+            message: 'Success / Error'
+            success: true // boolean
+        }
+        ```
+## Dummy Accounts
+- Student
+    - id: "0000-11111"
+    - password: "password"
+- Approver
+    - id: "ocosci-laboratory"
+    - password: "password"
 ## How to realtime?
 - Add socketio script
     ```html

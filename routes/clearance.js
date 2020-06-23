@@ -1,15 +1,14 @@
 const clearance = require('express').Router()
-const { verifyToken } = require('../middleware/jwt')
 const { fetchStudentInfo, fetchClearance, studentApplyClearable, studentCancelClearableApplication } = require('../models/ClearanceDatabase')
 const { getClearanceInfoFromCID } = require('../models/tables/clearance')
 
-clearance.get('/', verifyToken, async(req, res) => {
+clearance.get('/', async(req, res) => {
     const { ClearanceID } = await fetchStudentInfo(req.body.id)
     const flow = await fetchClearance(ClearanceID)
     res.status(200).send(flow)
 })
 
-clearance.post('/apply', verifyToken, async(req, res, next) => {
+clearance.post('/apply', async(req, res, next) => {
     const id = req.body.id
     const fti = (await fetchStudentInfo(id)).ClearanceID
     const fbi = (await getClearanceInfoFromCID(req.body.CID)).ClearanceID
@@ -21,7 +20,7 @@ clearance.post('/apply', verifyToken, async(req, res, next) => {
     }
 })
 
-clearance.post('/cancel', verifyToken, async(req, res, next) => {
+clearance.post('/cancel', async(req, res, next) => {
     const id = req.body.id
     const fti = (await fetchStudentInfo(id)).ClearanceID
     const fbi = (await getClearanceInfoFromCID(req.body.CID)).ClearanceID
