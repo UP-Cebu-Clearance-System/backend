@@ -1,6 +1,7 @@
 const routes = require('express').Router()
 
 const { account } = require('./routes/account')
+const { admin } = require('./routes/admin')
 const { approver } = require('./routes/approver')
 const { clearance } = require('./routes/clearance')
 const { login } = require('./routes/login')
@@ -10,6 +11,10 @@ const { test } = require('./routes/test')
 const { verifyToken } = require('./middleware/jwt')
 
 routes.use('/account', verifyToken, account)
+routes.use('/admin', (req, res, next ) => {
+        if(req.body.role !== 'admin') res.status(403).send({ message: 'Forbidden.' })
+        else next()        
+    })
 routes.use('/approver', verifyToken, (req, res, next) => {
         if (req.body.role !== 'approver') res.status(403).send({ message: 'Forbidden.' })
         else next()
