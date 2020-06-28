@@ -1,6 +1,6 @@
 const clearance = require('express').Router()
 const { fetchStudentInfo, fetchClearance, studentApplyClearable, studentCancelClearableApplication } = require('../models/ClearanceDatabase')
-const { getClearanceInfoFromCID } = require('../models/tables/clearance')
+const { CIDNext } = require('../middleware/next')
 
 clearance.get('/', async(req, res) => {
     const { ClearanceID } = await fetchStudentInfo(req.body.id)
@@ -8,28 +8,21 @@ clearance.get('/', async(req, res) => {
     res.status(200).send(flow)
 })
 
-clearance.post('/apply', async(req, res, next) => {
+clearance.post('/apply', CIDNext, async(req, res, next) => {
     const id = req.body.id
-    const fti = (await fetchStudentInfo(id)).ClearanceID
-    const fbi = (await getClearanceInfoFromCID(req.body.CID)).ClearanceID
-    if(fti === fbi){
-        const message = await studentApplyClearable(id, req.body.CID)
+    if(req.body.next !== null){
+        const message = await studentApplyClearable(id, req.body.next)
         res.status(200).send(message)
-    }else{
-        res.status(403).send({ message: 'Forbidden application.' })
     }
+    else res.status(200).send({ message: 'Clearance done.' })
 })
 
-clearance.post('/cancel', async(req, res, next) => {
-    const id = req.body.id
-    const fti = (await fetchStudentInfo(id)).ClearanceID
-    const fbi = (await getClearanceInfoFromCID(req.body.CID)).ClearanceID
-    if(fti === fbi){
-        const message = await studentCancelClearableApplication(req.body.CID)
+clearance.post('/cancel', CIDNext, async(req, res, next) => {
+    if(req.body.next !== null){
+        const message = await studentCancelClearableApplication(req.body.next)
         res.status(200).send(message)
-    }else{
-        res.status(403).send({ message: 'Forbidden application.' })
     }
+    else res.status(200).send({ message: 'Clearance done.' })
 })
 
 module.exports = { clearance }
