@@ -240,7 +240,7 @@ An approver might want to check the clearance of student to check some requisite
 `approverGetClearanceOfStudent(studentID)`
 
 - Parameters
-  - StudentID
+  - ClearanceID
 - Response
   - array of student clearables
 
