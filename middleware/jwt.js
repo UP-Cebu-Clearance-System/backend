@@ -20,6 +20,7 @@ const verifyToken = (req, res, next) => {
             res.status(401).send({ message: `Invalid Token.` })
         } else {
             req.body.id = data.id
+            req.body.role = data.role
             next()
         }
     })
