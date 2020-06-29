@@ -39,7 +39,37 @@ const studentUpdateInformation = async () => {
 const studentApplyClearable = async (id, cid) => {
   try {
     let clrInfo = await Clearance.getClearanceInfoFromCID(cid);
-    if (clrInfo["Status"] == "Pending" || clrInfo["Status"] == "Signed") {
+    // fetch the clearance of student
+    // get the flow number of cid
+    // check the status of all below flow number of cid
+    // if there is at least one that is not Signed, return fail
+    var compliedAllRequisites = true;
+    var clearance = await fetchClearance(clrInfo["ClearanceID"]);
+    for (var i = 0; i < clearance.length; i++) {
+      if (clearance[i]["Flow"] < clrInfo["Flow"]) {
+        if (
+          clearance[i]["Status"] == null ||
+          clearance[i]["Status"] == "Rejected" ||
+          clearance[i]["Status"] == "Pending"
+        ) {
+          compliedAllRequisites = false;
+          break;
+        }
+      }
+    }
+
+    if (
+      clrInfo["Status"] == "Pending" ||
+      clrInfo["Status"] == "Signed" ||
+      !compliedAllRequisites
+    ) {
+      if (!compliedAllRequisites) {
+        return {
+          message: "Unable to apply. Previous clearables have not been signed.",
+          success: false,
+        };
+      }
+
       return {
         message: "Failed to apply. You have already applied.",
         success: false,
@@ -158,6 +188,23 @@ const approverSignClearanceWithRemarks = async (CID, remarks) => {
     await ClearanceQueue.deleteClearable(CID);
     await Clearance.updateClearableRemarks(CID, remarks);
     await Clearance.updateClearableStatus(CID, "Signed");
+    // fetch all clearance
+
+    let clrInfo = await Clearance.getClearanceInfoFromCID(CID);
+    var clearance = await fetchClearance(clrInfo["ClearanceID"]);
+    let completed = true;
+
+    for (var i = 0; i < clearance.length; i++) {
+      if (
+        clearance[i]["Status"] == null ||
+        clearance[i]["Status"] == "Rejected" ||
+        clearance[i]["Status"] == "Pending"
+      ) {
+        completed = false;
+      }
+    }
+    if (completed) await Student.updateStatus("Cleared");
+    else await Student.updateStatus("Pending");
 
     return { message: "Successfully approved", success: true };
   } catch (e) {
@@ -165,8 +212,8 @@ const approverSignClearanceWithRemarks = async (CID, remarks) => {
   }
 };
 
-const approverGetClearanceOfStudent = async (studentID) => {
-  return Clearance.getClearance(studentID);
+const approverGetClearanceOfStudent = async (clearanceID) => {
+  return await Clearance.getClearance(clearanceID);
 };
 
 const approverSignClearance = async (CID) => {
@@ -179,6 +226,21 @@ const approverSignClearance = async (CID) => {
     );
     await ClearanceQueue.deleteClearable(CID);
     await Clearance.updateClearableStatus(CID, "Signed");
+    let clrInfo = await Clearance.getClearanceInfoFromCID(CID);
+    var clearance = await fetchClearance(clrInfo["ClearanceID"]);
+    let completed = true;
+
+    for (var i = 0; i < clearance.length; i++) {
+      if (
+        clearance[i]["Status"] == null ||
+        clearance[i]["Status"] == "Rejected" ||
+        clearance[i]["Status"] == "Pending"
+      ) {
+        completed = false;
+      }
+    }
+    if (completed) await Student.updateStatus("Cleared");
+    else await Student.updateStatus("Pending");
 
     return { message: "Successfully approved", success: true };
   } catch (e) {
@@ -289,5 +351,6 @@ module.exports = {
   fetchClearanceTypeBasedOnCollegeID,
   populateClearanceForStudentID,
   approverRestoreClearable,
-  studentCancelClearableApplication,approverGetClearanceOfStudent
+  studentCancelClearableApplication,
+  approverGetClearanceOfStudent,
 };

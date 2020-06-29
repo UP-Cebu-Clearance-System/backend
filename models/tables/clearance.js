@@ -19,6 +19,15 @@ function getClearanceInfoFromCID(cid) {
     });
   });
 }
+// function getClearanceInfoFromClearanceID(cid) {
+//   const query = "SELECT * from Clearance WHERE CID = ?";
+//   return new Promise(function (resolve, reject) {
+//     db.get(query, [cid], (err, rows) => {
+//       if (err) resolve({ message: "Failed", error: err, success: false });
+//       else resolve(rows);
+//     });
+//   });
+// } 
 
 function getAllClearances() {
   const query = "SELECT * from Clearance";
