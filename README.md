@@ -113,12 +113,6 @@ production link: https://clearance.herokuapp.com
             "Authorization": "Bearer <token>"
         }
         ```
-    - request body:
-        ```js
-        {
-            "CID": 1 //int: cid of the clearance item
-        }
-        ```
     - response:
         ```js
         200 OK
@@ -128,12 +122,6 @@ production link: https://clearance.herokuapp.com
         ```js
         {
             "Authorization": "Bearer <token>"
-        }
-        ```
-    - request body:
-        ```js
-        {
-            "CID": 1 //int: cid of the clearance item
         }
         ```
     - response:
