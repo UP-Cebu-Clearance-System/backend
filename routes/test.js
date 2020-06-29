@@ -23,7 +23,7 @@ test.get("/fetchStudentInfo", async (req, res) => {
 });
 
 test.get("/fetchClearance", async (req, res) => {
-  res.send(await ClearanceDatabase.fetchClearance("cosci-2018-05994"));
+  res.send(await ClearanceDatabase.fetchClearance("ct-cosci-2018-3000"));
 });
 
 test.get("/fetch3", async (req, res) => {
