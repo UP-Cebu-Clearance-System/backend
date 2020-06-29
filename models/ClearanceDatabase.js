@@ -49,7 +49,8 @@ const studentApplyClearable = async (id, cid) => {
       if (clearance[i]["Flow"] < clrInfo["Flow"]) {
         if (
           clearance[i]["Status"] == null ||
-          clearance[i]["Status"] == "Rejected"
+          clearance[i]["Status"] == "Rejected" ||
+          clearance[i]["Status"] == "Pending"
         ) {
           compliedAllRequisites = false;
           break;
@@ -187,6 +188,23 @@ const approverSignClearanceWithRemarks = async (CID, remarks) => {
     await ClearanceQueue.deleteClearable(CID);
     await Clearance.updateClearableRemarks(CID, remarks);
     await Clearance.updateClearableStatus(CID, "Signed");
+    // fetch all clearance
+
+    let clrInfo = await Clearance.getClearanceInfoFromCID(CID);
+    var clearance = await fetchClearance(clrInfo["ClearanceID"]);
+    let completed = true;
+
+    for (var i = 0; i < clearance.length; i++) {
+      if (
+        clearance[i]["Status"] == null ||
+        clearance[i]["Status"] == "Rejected" ||
+        clearance[i]["Status"] == "Pending"
+      ) {
+        completed = false;
+      }
+    }
+    if (completed) await Student.updateStatus("Cleared");
+    else await Student.updateStatus("Pending");
 
     return { message: "Successfully approved", success: true };
   } catch (e) {
@@ -208,6 +226,21 @@ const approverSignClearance = async (CID) => {
     );
     await ClearanceQueue.deleteClearable(CID);
     await Clearance.updateClearableStatus(CID, "Signed");
+    let clrInfo = await Clearance.getClearanceInfoFromCID(CID);
+    var clearance = await fetchClearance(clrInfo["ClearanceID"]);
+    let completed = true;
+
+    for (var i = 0; i < clearance.length; i++) {
+      if (
+        clearance[i]["Status"] == null ||
+        clearance[i]["Status"] == "Rejected" ||
+        clearance[i]["Status"] == "Pending"
+      ) {
+        completed = false;
+      }
+    }
+    if (completed) await Student.updateStatus("Cleared");
+    else await Student.updateStatus("Pending");
 
     return { message: "Successfully approved", success: true };
   } catch (e) {

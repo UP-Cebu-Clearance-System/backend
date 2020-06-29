@@ -90,6 +90,26 @@ function updateStudent(params) {
     });
   });
 }
+function updateStatus(status, studentID) {
+  /** Must give the whole student row in exact order */
+  const query = `UPDATE Student SET Status = ? WHERE StudentID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, [status, studentID], (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully updated", success: true });
+    });
+  });
+}
+function updateStudent(params) {
+  /** Must give the whole student row in exact order */
+  const query = `UPDATE Student SET Name = ?, ClearanceID = ?, Status = ?, CollegeID = ?, Password = ?  WHERE StudentID = ?`;
+  return new Promise(function (resolve, reject) {
+    db.all(query, params, (err, rows) => {
+      if (err) resolve({ message: "Failed", error: err, success: false });
+      else resolve({ message: "Successfully updated", success: true });
+    });
+  });
+}
 function deleteStudent(id) {
   const query = "DELETE from Student WHERE StudentID = ?";
   return new Promise(function (resolve, reject) {
@@ -104,6 +124,7 @@ module.exports = {
   getStudent,
   getStudentInfoFromClearanceID,
   updatePassword,
+  updateStatus,
   getAllStudents,
   getStudentCollegeID,
   createStudent,
