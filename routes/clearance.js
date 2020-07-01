@@ -14,7 +14,7 @@ clearance.post('/apply', CIDNext, async(req, res, next) => {
         const message = await studentApplyClearable(id, req.body.next)
         res.status(200).send(message)
     }
-    else res.status(200).send({ message: 'Clearance done.' })
+    else res.status(200).send({ message: 'Already cleared.' })
 })
 
 clearance.post('/cancel', CIDNext, async(req, res, next) => {
@@ -22,7 +22,7 @@ clearance.post('/cancel', CIDNext, async(req, res, next) => {
         const message = await studentCancelClearableApplication(req.body.next)
         res.status(200).send(message)
     }
-    else res.status(200).send({ message: 'Clearance done.' })
+    else res.status(200).send({ message: 'Already cleared.' })
 })
 
 module.exports = { clearance }
