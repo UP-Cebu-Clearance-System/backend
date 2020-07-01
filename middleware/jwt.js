@@ -1,4 +1,3 @@
-require('dotenv').config()
 const { sign, verify } = require('jsonwebtoken')
 
 const getToken = (req, res, next) => {
