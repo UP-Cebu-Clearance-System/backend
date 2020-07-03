@@ -1,4 +1,5 @@
 const morgan = require('morgan')
+const moment = require('moment-timezone')
 const { decode } = require('jsonwebtoken')
 
 morgan.token('user', (req, res) => {
@@ -7,6 +8,10 @@ morgan.token('user', (req, res) => {
     return `${ role } ${ id }`
 })
 
-morgan.format('common', ':remote-addr :user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]')
+morgan.token('date', (req, res) => {
+    return `${ moment.tz('Asia/Manila').format('D/MMM/YYYY:HH:mm:ss Z') }`
+})
+
+morgan.format('common', ':remote-addr :user [:date] ":method :url HTTP/:http-version" :status :res[content-length]')
 
 module.exports = { morgan }
