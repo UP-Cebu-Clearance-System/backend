@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
-const morgan = require('morgan')
+const { morgan } = require('./middleware/logger')
 const { createStream } = require('rotating-file-stream')
 const { routes } = require('./routes')
 
@@ -16,7 +16,7 @@ if(process.env.NODE_ENV === 'production'){
         interval: '1d',
         path: `${ __dirname }/logs`
     })
-    app.use(morgan(':remote-addr - :user-agent [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]', { stream: accessLogStream }))
+    app.use(morgan('common', { stream: accessLogStream }))
 }
 else app.use(morgan('dev'))
 
