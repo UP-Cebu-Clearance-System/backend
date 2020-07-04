@@ -3,8 +3,8 @@ const moment = require('moment-timezone')
 const { decode } = require('jsonwebtoken')
 
 morgan.token('user', (req, res) => {
-    const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : req.headers.authorization
-    const { id, role } = decode(token)
+    const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null
+    const { id, role } = token ? decode(token) : { id: `${ req.body.id || '-'}`, role: `${ req.url.substring(1) || '-' }` }
     return `${ role } ${ id }`
 })
 
