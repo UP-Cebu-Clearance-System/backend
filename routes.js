@@ -11,7 +11,7 @@ const { test } = require('./routes/test')
 const { verifyToken } = require('./middleware/jwt')
 
 routes.use('/account', verifyToken, account)
-routes.use('/admin', (req, res, next ) => {
+routes.use('/admin', verifyToken, (req, res, next ) => {
         if(req.body.role !== 'admin') res.status(403).send({ message: 'Forbidden.' })
         else next()        
     }, admin)
