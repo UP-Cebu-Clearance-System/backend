@@ -78,6 +78,20 @@ production link: https://clearance.herokuapp.com
             "accessToken": "Token"
         }
         ```
+- POST /login/admin
+    - request body:
+        ```js
+        {
+            "username": "admin", // username: string
+            "password": "password" // password: string
+        }
+        ```
+    - response
+        ```js
+        {
+            "accessToken": "Token"
+        }
+        ```
 #### CLEARANCE
 - GET /clearance (*list of clearance items)
     - Headers
@@ -196,6 +210,91 @@ production link: https://clearance.herokuapp.com
             message: 'Success / Error'
             success: true // boolean
         }
+        ```
+- GET /approver/logs (*show logs of approver's actions)
+    - Headers
+        ```js
+        {
+            "Authorization": "Bearer <token>"
+        }
+        ```
+    - response:
+        ```js
+        [
+            {
+                "ID": 57, // logID: int
+                "CID": 121,
+                "ApproverID": "ocosci-laboratory",
+                "StudentName": "Juan Dela Cruz",
+                "StudentID": "0000-11111",
+                "ClearanceID": "ct-cosci-0000-11111",
+                "Note": null,
+                "Status": "Signed",
+                "Remarks": null,
+                "Modification": "APPROVER_RESTORE",
+                "Timestamp": "2020-07-05T04:48:42.115Z"
+            },
+            ...
+        ]
+        
+        ```
+- POST /approver/restore
+    - Headers
+        ```js
+        {
+            "Authorization": "Bearer <token>"
+        }
+        ```
+    - request body:
+        ```js
+        {
+            "logID": 1 // the ID from the /logs endpoint: int
+        }
+        ```
+    - response:
+        ```js
+        200 OK
+        {}
+        ```
+#### ADMIN
+- GET /admin/download/backup (*download db backup)
+    - Headers
+        ```js
+        {
+            "Authorization": "Bearer <token>"
+        }
+        ```
+    - response
+        ```
+        *start db backup file download
+        ```
+- GET admin/download/log/:file
+    - Headers
+        ```js
+        {
+            "Authorization": "Bearer <token>"
+        }
+        ```
+    - response
+        ```
+        *start log file download
+        ```
+- GET admin/logs (*show list of logs)
+    - Headers
+        ```js
+        {
+            "Authorization": "Bearer <token>"
+        }
+        ```
+    - response
+        ```js
+        [
+            {
+                filename: 'example.log',
+                url: 'admin/download/log/example.log'
+            },
+            ...
+        ]
         ```
 #### ACCOUNT
 - GET /account/info (* public info of account holder)
