@@ -1,3 +1,5 @@
+const { db } = require("../db");
+
 const Admin = require("./tables/admin");
 
 const Approver = require("./tables/approver");
