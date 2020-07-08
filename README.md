@@ -18,7 +18,7 @@ production link: https://clearance.herokuapp.com
 ## Endpoints
 #### SIGNUP
 - POST  /signup/student
-    - request body: 
+    - request body 
         ```js
         {
             "id": "0000-00000", // student id: string
@@ -35,7 +35,7 @@ production link: https://clearance.herokuapp.com
         }
         ```
 - POST /signup/approver
-    - request body:
+    - request body
         ```js
         {
             "id": "abcd-efgh", // aprrover id: string
@@ -51,7 +51,7 @@ production link: https://clearance.herokuapp.com
         ```
 #### LOGIN
 - POST /login/student
-    - request body:
+    - request body
         ```js
         {
             "id": "0000-00000", // id: string
@@ -65,7 +65,7 @@ production link: https://clearance.herokuapp.com
         }
         ```
 - POST /login/approver
-    - request body:
+    - request body
         ```js
         {
             "id": "0000-00000", // id: string
@@ -79,7 +79,7 @@ production link: https://clearance.herokuapp.com
         }
         ```
 - POST /login/admin
-    - request body:
+    - request body
         ```js
         {
             "username": "admin", // username: string
@@ -94,7 +94,7 @@ production link: https://clearance.herokuapp.com
         ```
 #### CLEARANCE
 - GET /clearance (*list of clearance items)
-    - Headers
+    - headers
         ```js
         {
             "Authorization": "Bearer <token>"
@@ -121,24 +121,24 @@ production link: https://clearance.herokuapp.com
         }
         ```
 - POST /clearance/apply (*student must apply in order for their name to seen in the approvers dashboard)
-    - Headers
+    - headers
         ```js
         {
             "Authorization": "Bearer <token>"
         }
         ```
-    - response:
+    - response
         ```js
         200 OK
         ```
 - POST /clearance/cancel (*if student want to cancel their application)
-    - Headers
+    - headers
         ```js
         {
             "Authorization": "Bearer <token>"
         }
         ```
-    - response:
+    - response
         ```js
         {
             message: 'Success / Error'
@@ -147,7 +147,7 @@ production link: https://clearance.herokuapp.com
         ```
 #### APPROVER
 - GET /approver (*list of students to be approved)
-    - Headers
+    - headers
         ```js
         {
             "Authorization": "Bearer <token>"
@@ -170,20 +170,20 @@ production link: https://clearance.herokuapp.com
         ]
         ```
 - POST /approver/sign
-    - Headers
+    - headers
         ```js
         {
             "Authorization": "Bearer <token>"
         }
         ```
-    - request body:
+    - request body
         ```js
         {
             "CID": 1 //int: cid of the clearance item
             "remarks": "<message>" //optional
         }
         ```
-    - response:
+    - response
         ```js
         {
             message: 'Success / Error'
@@ -191,20 +191,20 @@ production link: https://clearance.herokuapp.com
         }
         ```
 - POST /approver/reject
-    - Headers
+    - headers
         ```js
         {
             "Authorization": "Bearer <token>"
         }
         ```
-    - request body:
+    - request body
         ```js
         {
             "CID": 1 //int: cid of the clearance item
             "remarks": "<message>"
         }
         ```
-    - response:
+    - response
         ```js
         {
             message: 'Success / Error'
@@ -212,13 +212,13 @@ production link: https://clearance.herokuapp.com
         }
         ```
 - GET /approver/logs (*show logs of approver's actions)
-    - Headers
+    - headers
         ```js
         {
             "Authorization": "Bearer <token>"
         }
         ```
-    - response:
+    - response
         ```js
         [
             {
@@ -239,26 +239,26 @@ production link: https://clearance.herokuapp.com
         
         ```
 - POST /approver/restore
-    - Headers
+    - headers
         ```js
         {
             "Authorization": "Bearer <token>"
         }
         ```
-    - request body:
+    - request body
         ```js
         {
             "logID": 1 // the ID from the /logs endpoint: int
         }
         ```
-    - response:
+    - response
         ```js
         200 OK
         {}
         ```
 #### ADMIN
 - GET /admin/download/backup (*download db backup)
-    - Headers
+    - headers
         ```js
         {
             "Authorization": "Bearer <token>"
@@ -269,7 +269,7 @@ production link: https://clearance.herokuapp.com
         *start db backup file download
         ```
 - GET admin/download/log/:file
-    - Headers
+    - headers
         ```js
         {
             "Authorization": "Bearer <token>"
@@ -280,7 +280,7 @@ production link: https://clearance.herokuapp.com
         *start log file download
         ```
 - GET admin/logs (*show list of logs)
-    - Headers
+    - headers
         ```js
         {
             "Authorization": "Bearer <token>"
@@ -296,15 +296,38 @@ production link: https://clearance.herokuapp.com
             ...
         ]
         ```
-#### ACCOUNT
-- GET /account/info (* public info of account holder)
-    - Headers
+- POST admin/query (*do manual query)
+- headers
         ```js
         {
             "Authorization": "Bearer <token>"
         }
         ```
-    - response:
+    - request body
+        ```js
+        {
+            query: "SELECT * from Student" // manual query: string
+        }
+        ```
+    - response
+        ```js
+        [
+            {
+                message: 'Success / Error',
+                result: []
+            },
+            ...
+        ]
+        ```
+#### ACCOUNT
+- GET /account/info (* public info of account holder)
+    - headers
+        ```js
+        {
+            "Authorization": "Bearer <token>"
+        }
+        ```
+    - response
         ```js
         // if student
         {
@@ -322,20 +345,20 @@ production link: https://clearance.herokuapp.com
         }
         ```
 - POST /account/password (*change current password)
-    - Headers
+    - headers
         ```js
         {
             "Authorization": "Bearer <token>"
         }
         ```
-    - request body:
+    - request body
         ```js
         {
             "password": "password" // string: current password of the account
             "newPassword": "newPassword" // string
         }
         ```
-    - response:
+    - response
         ```js
         {
             message: 'Success / Error'
